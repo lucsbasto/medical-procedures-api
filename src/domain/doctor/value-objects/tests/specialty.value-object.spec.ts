@@ -32,4 +32,10 @@ describe('Specialty', () => {
     const specialty2 = Specialty.create('Ophthalmology');
     expect(specialty1.equals(specialty2)).toBe(false);
   });
+
+  it('should handle correctly casing correctly for equality (case-sensitive)', () => {
+    const specialty1 = Specialty.create('Internal Medicine');
+    const specialty2 = Specialty.create('internal medicine');
+    expect(specialty1.equals(specialty2)).toBe(true);
+  });
 });
