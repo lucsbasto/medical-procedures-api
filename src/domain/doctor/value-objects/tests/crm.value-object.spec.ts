@@ -13,4 +13,10 @@ describe('CRM', () => {
     const crm = CRM.create(crmValue);
     expect(crm.value).toBe('SP987654');
   });
+
+  
+  it('should throw an error if CRM is empty', () => {
+    expect(() => CRM.create('')).toThrow('CRM não pode ser vazio.');
+    expect(() => CRM.create('   ')).toThrow('CRM não pode ser vazio.');
+  });
 });
