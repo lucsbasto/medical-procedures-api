@@ -12,4 +12,8 @@ describe('Specialty', () => {
     const specialty = Specialty.create(specialtyValue);
     expect(specialty.value).toBe('Dermatology');
   });
+
+  it('should throw an error if the provided value is empty', () => {
+    expect(() => Specialty.create('')).toThrow('Specialty cannot be empty.');
+  });
 });
