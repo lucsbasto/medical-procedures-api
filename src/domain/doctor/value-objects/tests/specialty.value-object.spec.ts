@@ -16,4 +16,8 @@ describe('Specialty', () => {
   it('should throw an error if the provided value is empty', () => {
     expect(() => Specialty.create('')).toThrow('Specialty cannot be empty.');
   });
+
+  it('should throw an error if the provided value contains only spaces', () => {
+    expect(() => Specialty.create('   ')).toThrow('Specialty cannot be empty.');
+  });
 });
