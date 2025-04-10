@@ -20,4 +20,10 @@ describe('Specialty', () => {
   it('should throw an error if the provided value contains only spaces', () => {
     expect(() => Specialty.create('   ')).toThrow('Specialty cannot be empty.');
   });
+
+  it('should be equal to another Specialty with the same value', () => {
+    const specialty1 = Specialty.create('Neurology');
+    const specialty2 = Specialty.create('Neurology');
+    expect(specialty1.equals(specialty2)).toBe(true);
+  });
 });
