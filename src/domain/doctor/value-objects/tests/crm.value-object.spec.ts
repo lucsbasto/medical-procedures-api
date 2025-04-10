@@ -19,4 +19,8 @@ describe('CRM', () => {
     expect(() => CRM.create('')).toThrow('CRM não pode ser vazio.');
     expect(() => CRM.create('   ')).toThrow('CRM não pode ser vazio.');
   });
+
+  it('should throw an error if CRM format is invalid (no state)', () => {
+    expect(() => CRM.create('123456')).toThrow('Formato de CRM inválido. Deve seguir o padrão: XXNNNNN... (ex: SP123456).');
+  });
 });
