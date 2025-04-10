@@ -6,4 +6,10 @@ describe('Specialty', () => {
     const specialty = Specialty.create(specialtyValue);
     expect(specialty.value).toBe('Cardiology');
   });
+
+  it('should create a valid Specialty and trim leading/trailing spaces', () => {
+    const specialtyValue = '  Dermatology  ';
+    const specialty = Specialty.create(specialtyValue);
+    expect(specialty.value).toBe('Dermatology');
+  });
 });
