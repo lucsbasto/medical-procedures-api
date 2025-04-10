@@ -1,0 +1,58 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "organizeImports": { "enabled": true },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "attributePosition": "auto",
+    "ignore": ["**/node_modules/", "**/dist/"]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteStyle": "single"
+    },
+    "parser": { "unsafeParameterDecoratorsEnabled": true }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "complexity": {
+        "useArrowFunction": "off",
+        "useLiteralKeys": "off",
+        "noBannedTypes": "off",
+        "noUselessTernary": "off",
+        "noStaticOnlyClass": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "style": {
+        "useImportType": "off",
+        "useNumberNamespace": "off",
+        "noUselessElse": "off",
+        "useTemplate": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": {
+          "level": "info",
+          "fix": "unsafe"
+        }
+      }
+    }
+  },
+
+  "files": {
+    "ignore": ["node_modules", "dist/**", "src/infrastructure/databases/migrations"],
+    "include": ["src/**/*.ts"]
+  }
+}
