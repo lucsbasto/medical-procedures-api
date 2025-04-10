@@ -17,6 +17,7 @@ export class Specialty extends ValueObject<SpecialtyProps> {
     if (!value || value.trim() === '') {
       throw new Error('Specialty cannot be empty.');
     }
-    return new Specialty({ value: value.trim() });
+    const upperCasedValue = value.trim().toUpperCase();
+    return new Specialty({ value: upperCasedValue });
   }
 }
