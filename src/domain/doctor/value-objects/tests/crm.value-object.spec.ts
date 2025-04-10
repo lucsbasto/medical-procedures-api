@@ -31,4 +31,8 @@ describe('CRM', () => {
   it('should throw an error if CRM format is invalid (no numbers)', () => {
     expect(() => CRM.create('SP')).toThrow('Formato de CRM inválido. Deve seguir o padrão: XXNNNNN... (ex: SP123456).');
   });
+
+  it('should throw an error if CRM format is invalid (numbers are not numbers)', () => {
+    expect(() => CRM.create('SPABC')).toThrow('Formato de CRM inválido. Deve seguir o padrão: XXNNNNN... (ex: SP123456).');
+  });
 });
