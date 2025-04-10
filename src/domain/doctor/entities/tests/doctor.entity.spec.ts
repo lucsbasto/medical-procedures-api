@@ -31,4 +31,19 @@ describe('Doctor', () => {
     expect(doctor.crm).toBe(crmValue.toUpperCase());
     expect(doctor.specialty).toBe(specialtyValue.toUpperCase());
   });
+
+  
+  it('should correctly retrieve Doctor properties', () => {
+    const id = 'doctor-789';
+    const name = 'Dr. Robert Jones';
+    const crmValue = 'MG112233';
+    const specialtyValue = 'Neurology';
+
+    const doctor = new Doctor(id, name, crmValue, specialtyValue);
+
+    expect(doctor.id).toBe('doctor-789');
+    expect(doctor.name).toBe('Dr. Robert Jones');
+    expect(doctor.crm).toBe('MG112233'.toUpperCase());
+    expect(doctor.specialty).toBe('Neurology'.trim().toUpperCase());
+  });
 });
