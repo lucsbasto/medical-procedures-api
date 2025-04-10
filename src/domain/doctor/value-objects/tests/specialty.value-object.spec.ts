@@ -26,4 +26,10 @@ describe('Specialty', () => {
     const specialty2 = Specialty.create('Neurology');
     expect(specialty1.equals(specialty2)).toBe(true);
   });
+
+  it('should not be equal to another Specialty with a different value', () => {
+    const specialty1 = Specialty.create('Pediatrics');
+    const specialty2 = Specialty.create('Ophthalmology');
+    expect(specialty1.equals(specialty2)).toBe(false);
+  });
 });
