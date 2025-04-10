@@ -19,4 +19,16 @@ describe('Doctor', () => {
     expect(doctor.crm).toBe(crmValue.toUpperCase());
     expect(doctor.specialty).toBe(specialtyValue.trim().toUpperCase());
   });
+  
+  it('should create a Doctor with correctly created CRM and Specialty Value Objects', () => {
+    const id = 'doctor-456';
+    const name = 'Dr. Jane Smith';
+    const crmValue = 'rj987654';
+    const specialtyValue = 'Dermatology';
+
+    const doctor = new Doctor(id, name, crmValue, specialtyValue);
+
+    expect(doctor.crm).toBe(crmValue.toUpperCase());
+    expect(doctor.specialty).toBe(specialtyValue.toUpperCase());
+  });
 });
