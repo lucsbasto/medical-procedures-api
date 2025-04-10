@@ -35,4 +35,10 @@ describe('CRM', () => {
   it('should throw an error if CRM format is invalid (numbers are not numbers)', () => {
     expect(() => CRM.create('SPABC')).toThrow('Formato de CRM inválido. Deve seguir o padrão: XXNNNNN... (ex: SP123456).');
   });
+
+  it('should be equal to another CRM with the same value', () => {
+    const crm1 = CRM.create('RJ001122');
+    const crm2 = CRM.create('rj001122');
+    expect(crm1.equals(crm2)).toBe(true);
+  });
 });
