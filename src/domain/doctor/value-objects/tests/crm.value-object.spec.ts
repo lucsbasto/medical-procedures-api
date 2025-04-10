@@ -27,4 +27,8 @@ describe('CRM', () => {
   it('should throw an error if CRM format is invalid (state too short)', () => {
     expect(() => CRM.create('S123456')).toThrow('Formato de CRM inválido. Deve seguir o padrão: XXNNNNN... (ex: SP123456).');
   });
+
+  it('should throw an error if CRM format is invalid (no numbers)', () => {
+    expect(() => CRM.create('SP')).toThrow('Formato de CRM inválido. Deve seguir o padrão: XXNNNNN... (ex: SP123456).');
+  });
 });
