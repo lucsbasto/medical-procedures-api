@@ -24,7 +24,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@/application/*": ["src/application/*"],
-      "@/commons/*": ["src/commons/*"],
+      "@/common/*": ["src/common/*"],
       "@/domain/*": ["src/domain/*"],
       "@/infrastructure/*": ["src/infrastructure/*"],
       "@/mock/*": ["test/mocks/*"],
