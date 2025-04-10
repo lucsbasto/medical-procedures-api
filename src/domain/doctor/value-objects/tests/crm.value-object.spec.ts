@@ -41,4 +41,10 @@ describe('CRM', () => {
     const crm2 = CRM.create('rj001122');
     expect(crm1.equals(crm2)).toBe(true);
   });
+
+  it('should not be equal to another CRM with a different value', () => {
+    const crm1 = CRM.create('MG334455');
+    const crm2 = CRM.create('RS667788');
+    expect(crm1.equals(crm2)).toBe(false);
+  });
 });
