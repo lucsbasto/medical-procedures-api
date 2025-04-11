@@ -66,4 +66,15 @@ describe('RegisterDoctorUseCase', () => {
     await expect(registerDoctorUseCase.execute(input)).rejects.toThrow('Doctor speciality cannot be empty.');
     expect(mockDoctorRepository.create).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if the doctor CRM is empty', async () => {
+    const input: RegisterDoctorInputDto = {
+      name: 'Dr. John Doe',
+      specialty: 'Cardiology',
+      crm: '',
+    };
+
+    await expect(registerDoctorUseCase.execute(input)).rejects.toThrow('Doctor CRM cannot be empty.');
+    expect(mockDoctorRepository.create).not.toHaveBeenCalled();
+  });
 });
