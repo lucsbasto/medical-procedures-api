@@ -35,4 +35,10 @@ describe('Contact', () => {
     expect(() => Contact.create(phone, 'test@example')).toThrow('Invalid email format.');
     expect(() => Contact.create(phone, '@example.com')).toThrow('Invalid email format.');
   });
+
+  it('should be equal to another Contact with the same phone and email', () => {
+    const contact1 = Contact.create('12345', 'test@test.com');
+    const contact2 = Contact.create('12345', 'test@test.com');
+    expect(contact1.equals(contact2)).toBe(true);
+  });
 });
