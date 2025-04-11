@@ -72,4 +72,16 @@ describe('RegisterMedicalProcedureUseCase', () => {
     await expect(registerMedicalProcedureUseCase.execute(input)).rejects.toThrow('Procedure date cannot be empty.');
     expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if procedureValue is not a positive number', async () => {
+    const input1: RegisterMedicalProcedureInputDto = { ...validInput(), procedureValue: 0 };
+    await expect(registerMedicalProcedureUseCase.execute(input1)).rejects.toThrow(
+      'Procedure value must be a positive number.',
+    );
+    const input2: RegisterMedicalProcedureInputDto = { ...validInput(), procedureValue: -50 };
+    await expect(registerMedicalProcedureUseCase.execute(input2)).rejects.toThrow(
+      'Procedure value must be a positive number.',
+    );
+    expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalledTimes(2);
+  });
 });
