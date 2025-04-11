@@ -53,4 +53,21 @@ describe('Doctor', () => {
     expect(doctor.phone).toBe('3177777777');
     expect(doctor.email).toBe('robert.jones@example.com');
   });
+
+  it('should create a Doctor instance with optional phone and email', () => {
+    const id = 'doctor-abc';
+    const name = 'Dr. Alice Brown';
+    const crmValue = 'es654321';
+    const specialtyValue = 'Pediatrics';
+
+    const doctor = new Doctor(id, name, crmValue, specialtyValue);
+
+    expect(doctor).toBeInstanceOf(Doctor);
+    expect(doctor.id).toBe(id);
+    expect(doctor.name).toBe(name);
+    expect(doctor.crm).toBe(crmValue.toUpperCase());
+    expect(doctor.specialty).toBe(specialtyValue.trim().toUpperCase());
+    expect(doctor.phone).toBeUndefined();
+    expect(doctor.email).toBeUndefined();
+  });
 });
