@@ -41,4 +41,18 @@ describe('Patient', () => {
     expect(patient.phone).toBe(phone.trim());
     expect(patient.email).toBe(email ? email.trim() : undefined);
   });
+
+  it('should correctly retrieve Patient properties', () => {
+    const id = 'patient-abc';
+    const name = 'Diana Lee';
+    const phone = '5554443333';
+    const email = 'diana.l@work.org';
+
+    const patient = new Patient(id, name, phone, email);
+
+    expect(patient.id).toBe('patient-abc');
+    expect(patient.name).toBe('Diana Lee');
+    expect(patient.phone).toBe('5554443333');
+    expect(patient.email).toBe('diana.l@work.org');
+  });
 });
