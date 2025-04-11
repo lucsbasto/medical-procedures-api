@@ -11,7 +11,7 @@ export class UpdateMedicalProcedureUseCase implements UpdateMedicalProcedureUseC
   constructor(private readonly medicalProcedureRepository: MedicalProcedureRepository) {}
 
   async execute(input: UpdateMedicalProcedureInputDto): Promise<MedicalProcedureOutputDto | null> {
-    const { id, doctorId, patientId, procedureDate, procedureValue, paymentStatus } = input;
+    const { id, doctorId, patientId, procedureDate, procedureValue, paymentStatus, procedureName } = input;
 
     if (!id || id.trim() === '') {
       throw new Error('Medical procedure ID cannot be empty for update.');
@@ -30,12 +30,14 @@ export class UpdateMedicalProcedureUseCase implements UpdateMedicalProcedureUseC
       procedureDate: procedureDate !== undefined ? procedureDate : existingProcedure.procedureDate,
       procedureValue: procedureValue !== undefined ? procedureValue : existingProcedure.procedureValue,
       paymentStatus: paymentStatus !== undefined ? paymentStatus : existingProcedure.paymentStatus,
+      procedureName: procedureName !== undefined ? procedureName : existingProcedure.procedureName,
     };
 
     const updatedProcedure = new MedicalProcedure(
       updatedProcedureData.id,
       updatedProcedureData.doctorId,
       updatedProcedureData.patientId,
+      updatedProcedureData.procedureName,
       updatedProcedureData.procedureDate,
       updatedProcedureData.procedureValue,
       updatedProcedureData.paymentStatus,
@@ -46,7 +48,6 @@ export class UpdateMedicalProcedureUseCase implements UpdateMedicalProcedureUseC
     const retrievedUpdatedProcedure = await this.medicalProcedureRepository.findById(id);
 
     if (!retrievedUpdatedProcedure) {
-      // This should ideally not happen if the update was successful
       return null;
     }
 
@@ -54,6 +55,7 @@ export class UpdateMedicalProcedureUseCase implements UpdateMedicalProcedureUseC
       id: retrievedUpdatedProcedure.id,
       doctorId: retrievedUpdatedProcedure.doctorId,
       patientId: retrievedUpdatedProcedure.patientId,
+      procedureName: retrievedUpdatedProcedure.procedureName,
       procedureDate: retrievedUpdatedProcedure.procedureDate,
       procedureValue: retrievedUpdatedProcedure.procedureValue,
       paymentStatus: retrievedUpdatedProcedure.paymentStatus,

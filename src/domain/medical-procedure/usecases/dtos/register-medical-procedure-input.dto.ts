@@ -6,4 +6,5 @@ export interface RegisterMedicalProcedureInputDto {
   procedureDate: Date;
   procedureValue: number;
   paymentStatus: PaymentStatus;
+  procedureName: string;
 }

@@ -15,6 +15,7 @@ export class GetAllMedicalProceduresUseCase implements GetAllMedicalProceduresUs
       id: procedure.id,
       doctorId: procedure.doctorId,
       patientId: procedure.patientId,
+      procedureName: procedure.procedureName,
       procedureDate: procedure.procedureDate,
       procedureValue: procedure.procedureValue,
       paymentStatus: procedure.paymentStatus,

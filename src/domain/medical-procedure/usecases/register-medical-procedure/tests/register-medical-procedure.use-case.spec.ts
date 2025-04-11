@@ -15,6 +15,7 @@ const mockMedicalProcedureRepository: jest.Mocked<MedicalProcedureRepository> = 
 const validInput = (): RegisterMedicalProcedureInputDto => ({
   doctorId: 'doctor-valid',
   patientId: 'patient-valid',
+  procedureName: 'Procedure Name',
   procedureDate: new Date(),
   procedureValue: 50.0,
   paymentStatus: PaymentStatus.PAID,
@@ -35,6 +36,7 @@ describe('RegisterMedicalProcedureUseCase', () => {
       generatedId,
       input.doctorId,
       input.patientId,
+      input.procedureName,
       input.procedureDate,
       input.procedureValue,
       input.paymentStatus,
@@ -49,6 +51,7 @@ describe('RegisterMedicalProcedureUseCase', () => {
       id: generatedId,
       doctorId: input.doctorId,
       patientId: input.patientId,
+      procedureName: input.procedureName,
       procedureDate: input.procedureDate,
       procedureValue: input.procedureValue,
       paymentStatus: input.paymentStatus,

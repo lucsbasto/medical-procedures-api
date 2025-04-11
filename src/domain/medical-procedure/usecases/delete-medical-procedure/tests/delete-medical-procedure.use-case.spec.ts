@@ -26,6 +26,7 @@ describe('DeleteMedicalProcedureUseCase', () => {
       'procedure-123',
       'doctor-abc',
       'patient-xyz',
+      'Consulta de Rotina',
       new Date(),
       100,
       PaymentStatus.PENDING,
