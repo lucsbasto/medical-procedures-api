@@ -1,5 +1,3 @@
-// src/domain/medical-procedure/entities/medical-procedure.entity.spec.ts
-
 import { PaymentStatus } from '../../enums/payment-status.enum';
 import { MedicalProcedure } from '../medical-procedure.entity';
 
@@ -28,5 +26,18 @@ describe('MedicalProcedure', () => {
     expect(medicalProcedure.procedureDate).toBe(procedureDate);
     expect(medicalProcedure.procedureValue).toBe(procedureValue);
     expect(medicalProcedure.paymentStatus).toBe(paymentStatus);
+  });
+
+  it('should throw an error for invalid payment status', () => {
+    expect(() => {
+      new MedicalProcedure(
+        'procedure-456',
+        'doctor-def',
+        'patient-uvw',
+        new Date(),
+        75.5,
+        'invalid-status' as PaymentStatus,
+      );
+    }).toThrow('Invalid payment status: invalid-status. Allowed statuses are: PAID, PENDING, GLOSSED');
   });
 });
