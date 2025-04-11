@@ -156,4 +156,16 @@ describe('GetAllDoctorsUseCase', () => {
       },
     ]);
   });
+
+  it('should return an empty array if no doctors match the filters', async () => {
+    const filters: GetAllDoctorsInputDto = { name: 'nonexistent' };
+    mockDoctorRepository.findAll.mockResolvedValue([]);
+
+    const result = await getAllDoctorsUseCase.execute(filters);
+
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
 });
