@@ -1,8 +1,6 @@
 // src/domain/doctor/entities/doctor.entity.spec.ts
 
-import { Doctor } from "../doctor.entity";
-
-
+import { Doctor } from '../doctor.entity';
 
 describe('Doctor', () => {
   it('should create a valid Doctor instance', () => {
@@ -19,7 +17,7 @@ describe('Doctor', () => {
     expect(doctor.crm).toBe(crmValue.toUpperCase());
     expect(doctor.specialty).toBe(specialtyValue.trim().toUpperCase());
   });
-  
+
   it('should create a Doctor with correctly created CRM and Specialty Value Objects', () => {
     const id = 'doctor-456';
     const name = 'Dr. Jane Smith';
@@ -32,7 +30,6 @@ describe('Doctor', () => {
     expect(doctor.specialty).toBe(specialtyValue.toUpperCase());
   });
 
-  
   it('should correctly retrieve Doctor properties', () => {
     const id = 'doctor-789';
     const name = 'Dr. Robert Jones';

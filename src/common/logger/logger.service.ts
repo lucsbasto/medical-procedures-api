@@ -82,8 +82,7 @@ export class LoggerService implements ILoggerService {
       meta: {
         context: this.contextName,
         idempotency: this._idempotencyKey,
-        details:
-          typeof details === 'object' ? JSON.stringify(details) : details,
+        details: typeof details === 'object' ? JSON.stringify(details) : details,
       },
     });
   }

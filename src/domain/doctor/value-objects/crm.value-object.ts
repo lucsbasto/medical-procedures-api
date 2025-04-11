@@ -1,4 +1,4 @@
-import { ValueObject } from "@/common/domain/value-object/value-object";
+import { ValueObject } from '@/common/domain/value-object/value-object';
 
 interface CrmProps {
   value: string;

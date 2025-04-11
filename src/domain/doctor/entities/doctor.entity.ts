@@ -29,5 +29,4 @@ export class Doctor {
   get specialty(): string {
     return this._specialty.value;
   }
-
 }
