@@ -8,6 +8,7 @@ export class MedicalProcedure {
   private _procedureValue: number;
   private _paymentStatus: PaymentStatus;
   private _procedureName: string;
+  private _denialReason: string | null;
 
   constructor(
     id: string,
@@ -17,6 +18,7 @@ export class MedicalProcedure {
     procedureDate: Date,
     procedureValue: number,
     paymentStatus: PaymentStatus,
+    denialReason: string | null = null,
   ) {
     this._id = id;
     this._doctorId = doctorId;
@@ -25,9 +27,11 @@ export class MedicalProcedure {
     this._procedureValue = procedureValue;
     this._paymentStatus = paymentStatus;
     this._procedureName = procedureName;
+    this._denialReason = denialReason;
     this.validatePaymentStatus();
     this.validateProcedureName();
     this.validateProcedureValue();
+    this.validateDenialReason(); // Adicionando a nova validação
   }
 
   get id(): string {
@@ -58,6 +62,10 @@ export class MedicalProcedure {
     return this._paymentStatus;
   }
 
+  get denialReason(): string | null {
+    return this._denialReason;
+  }
+
   private validatePaymentStatus(): void {
     const allowedStatuses = Object.values(PaymentStatus);
     if (!allowedStatuses.includes(this._paymentStatus)) {
@@ -76,6 +84,12 @@ export class MedicalProcedure {
   private validateProcedureValue(): void {
     if (this._procedureValue === undefined || this._procedureValue === null || this._procedureValue < 0) {
       throw new Error('Procedure value must be a non-negative number.');
+    }
+  }
+
+  private validateDenialReason(): void {
+    if (this._paymentStatus === PaymentStatus.DENIED && (!this._denialReason || this._denialReason.trim() === '')) {
+      throw new Error('Denial reason must be provided when payment status is DENIED.');
     }
   }
 }

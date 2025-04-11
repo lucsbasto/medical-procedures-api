@@ -45,7 +45,7 @@ describe('GetAllMedicalProceduresUseCase', () => {
     'procedure-name-3',
     new Date('2025-04-10T15:00:00-03:00'),
     150,
-    PaymentStatus.GLOSSED,
+    PaymentStatus.DENIED,
   );
 
   it('should return an array of all medical procedures when no filters are provided', async () => {
@@ -82,7 +82,7 @@ describe('GetAllMedicalProceduresUseCase', () => {
         procedureName: 'procedure-name-3',
         procedureDate: procedure3.procedureDate,
         procedureValue: 150,
-        paymentStatus: PaymentStatus.GLOSSED,
+        paymentStatus: PaymentStatus.DENIED,
       },
     ]);
   });
@@ -124,7 +124,7 @@ describe('GetAllMedicalProceduresUseCase', () => {
         procedureName: 'procedure-name-3',
         procedureDate: procedure3.procedureDate,
         procedureValue: 150,
-        paymentStatus: PaymentStatus.GLOSSED,
+        paymentStatus: PaymentStatus.DENIED,
       },
     ]);
   });
@@ -235,7 +235,7 @@ describe('GetAllMedicalProceduresUseCase', () => {
         procedureName: 'procedure-name-3',
         procedureDate: procedure3.procedureDate,
         procedureValue: 150,
-        paymentStatus: PaymentStatus.GLOSSED,
+        paymentStatus: PaymentStatus.DENIED,
       },
     ]);
   });
@@ -267,7 +267,7 @@ describe('GetAllMedicalProceduresUseCase', () => {
         procedureName: 'procedure-name-3',
         procedureDate: procedure3.procedureDate,
         procedureValue: 150,
-        paymentStatus: PaymentStatus.GLOSSED,
+        paymentStatus: PaymentStatus.DENIED,
       },
     ]);
   });
@@ -312,7 +312,7 @@ describe('GetAllMedicalProceduresUseCase', () => {
         procedureName: 'procedure-name-3',
         procedureDate: procedure3.procedureDate,
         procedureValue: 150,
-        paymentStatus: PaymentStatus.GLOSSED,
+        paymentStatus: PaymentStatus.DENIED,
       },
     ]);
   });
