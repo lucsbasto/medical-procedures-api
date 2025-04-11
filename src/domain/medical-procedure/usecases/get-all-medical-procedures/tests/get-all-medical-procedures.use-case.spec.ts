@@ -196,4 +196,34 @@ describe('GetAllMedicalProceduresUseCase', () => {
     expect(result).toHaveLength(0);
     expect(result).toEqual([]);
   });
+
+  it('should filter medical procedures by procedureValue less than or equal to', async () => {
+    const filterValue = 150;
+    const filters: GetAllMedicalProceduresInputDto = { procedureValue: { lte: filterValue } };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1, procedure3]);
+
+    const result = await getAllMedicalProceduresUseCase.execute(filters);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(2);
+    expect(result).toEqual([
+      {
+        id: '1',
+        doctorId: 'doctor-1',
+        patientId: 'patient-1',
+        procedureDate: procedure1.procedureDate,
+        procedureValue: 100,
+        paymentStatus: PaymentStatus.PAID,
+      },
+      {
+        id: '3',
+        doctorId: 'doctor-1',
+        patientId: 'patient-3',
+        procedureDate: procedure3.procedureDate,
+        procedureValue: 150,
+        paymentStatus: PaymentStatus.GLOSSED,
+      },
+    ]);
+  });
 });
