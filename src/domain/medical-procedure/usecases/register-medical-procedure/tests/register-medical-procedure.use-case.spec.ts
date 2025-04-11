@@ -66,4 +66,10 @@ describe('RegisterMedicalProcedureUseCase', () => {
     await expect(registerMedicalProcedureUseCase.execute(input)).rejects.toThrow('Patient ID cannot be empty.');
     expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if procedureDate is empty', async () => {
+    const input: RegisterMedicalProcedureInputDto = { ...validInput(), procedureDate: undefined as any };
+    await expect(registerMedicalProcedureUseCase.execute(input)).rejects.toThrow('Procedure date cannot be empty.');
+    expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalled();
+  });
 });
