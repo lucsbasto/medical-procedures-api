@@ -47,4 +47,11 @@ describe('GetPatientByIdUseCase', () => {
     expect(mockPatientRepository.findById).toHaveBeenCalledWith('non-existent-id');
     expect(result).toBeNull();
   });
+
+  it('should throw an error if an empty ID is provided', async () => {
+    const input: GetPatientByIdInputDto = { id: '' };
+
+    await expect(getPatientByIdUseCase.execute(input)).rejects.toThrow('Patient ID cannot be empty.');
+    expect(mockPatientRepository.findById).not.toHaveBeenCalled();
+  });
 });
