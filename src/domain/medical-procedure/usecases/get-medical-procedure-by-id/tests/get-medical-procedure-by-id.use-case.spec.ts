@@ -45,4 +45,15 @@ describe('GetMedicalProcedureByIdUseCase', () => {
       paymentStatus: expectedMedicalProcedure.paymentStatus,
     });
   });
+
+  it('should return null if the medical procedure with the given ID does not exist', async () => {
+    const input: GetMedicalProcedureByIdInputDto = { id: 'non-existent-id' };
+    mockMedicalProcedureRepository.findById.mockResolvedValue(null);
+
+    const result = await getMedicalProcedureByIdUseCase.execute(input);
+
+    expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledWith(input.id);
+    expect(result).toBeNull();
+  });
 });
