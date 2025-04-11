@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Patient } from '../../entities/patient.entity';
 import { PatientRepository } from '../../repositories/patient.repository';
-import { RegisterPatientInputDto } from '../dtos/register-patient-input.dto';
-import { RegisterPatientOutputDto } from '../dtos/register-patient-output.dto';
+import { RegisterPatientInputDto } from './dtos/register-patient-input.dto';
+import { RegisterPatientOutputDto } from './dtos/register-patient-output.dto';
 import { RegisterPatientUseCaseInterface } from './register-patient.use-case.interface';
 
 @Injectable()
