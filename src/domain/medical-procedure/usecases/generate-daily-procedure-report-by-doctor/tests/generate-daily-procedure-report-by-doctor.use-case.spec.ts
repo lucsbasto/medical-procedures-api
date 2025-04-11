@@ -165,4 +165,14 @@ describe('GenerateDailyProcedureReportByDoctorUseCase', () => {
       },
     ]);
   });
+
+  it('should throw an error if the date is not provided', async () => {
+    const input: GenerateDailyProcedureReportByDoctorInputDto = { date: undefined as any };
+
+    await expect(generateDailyProcedureReportByDoctorUseCase.execute(input)).rejects.toThrow(
+      'Date must be provided for the daily report.',
+    );
+    expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
+    expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
+  });
 });
