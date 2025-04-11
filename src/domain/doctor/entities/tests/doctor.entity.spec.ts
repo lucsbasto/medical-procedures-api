@@ -6,14 +6,18 @@ describe('Doctor', () => {
     const name = 'Dr. John Doe';
     const crmValue = 'sp123456';
     const specialtyValue = 'Cardiology';
+    const phone = '1199999999';
+    const email = 'john.doe@example.com';
 
-    const doctor = new Doctor(id, name, crmValue, specialtyValue);
+    const doctor = new Doctor(id, name, crmValue, specialtyValue, phone, email);
 
     expect(doctor).toBeInstanceOf(Doctor);
     expect(doctor.id).toBe(id);
     expect(doctor.name).toBe(name);
     expect(doctor.crm).toBe(crmValue.toUpperCase());
     expect(doctor.specialty).toBe(specialtyValue.trim().toUpperCase());
+    expect(doctor.phone).toBe(phone);
+    expect(doctor.email).toBe(email);
   });
 
   it('should create a Doctor with correctly created CRM and Specialty Value Objects', () => {
@@ -21,11 +25,15 @@ describe('Doctor', () => {
     const name = 'Dr. Jane Smith';
     const crmValue = 'rj987654';
     const specialtyValue = 'Dermatology';
+    const phone = '2188888888';
+    const email = 'jane.smith@example.com';
 
-    const doctor = new Doctor(id, name, crmValue, specialtyValue);
+    const doctor = new Doctor(id, name, crmValue, specialtyValue, phone, email);
 
     expect(doctor.crm).toBe(crmValue.toUpperCase());
     expect(doctor.specialty).toBe(specialtyValue.toUpperCase());
+    expect(doctor.phone).toBe(phone);
+    expect(doctor.email).toBe(email);
   });
 
   it('should correctly retrieve Doctor properties', () => {
@@ -33,12 +41,16 @@ describe('Doctor', () => {
     const name = 'Dr. Robert Jones';
     const crmValue = 'MG112233';
     const specialtyValue = 'Neurology';
+    const phone = '3177777777';
+    const email = 'robert.jones@example.com';
 
-    const doctor = new Doctor(id, name, crmValue, specialtyValue);
+    const doctor = new Doctor(id, name, crmValue, specialtyValue, phone, email);
 
     expect(doctor.id).toBe('doctor-789');
     expect(doctor.name).toBe('Dr. Robert Jones');
     expect(doctor.crm).toBe('MG112233'.toUpperCase());
     expect(doctor.specialty).toBe('Neurology'.trim().toUpperCase());
+    expect(doctor.phone).toBe('3177777777');
+    expect(doctor.email).toBe('robert.jones@example.com');
   });
 });
