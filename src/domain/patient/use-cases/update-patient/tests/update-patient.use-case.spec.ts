@@ -65,4 +65,26 @@ describe('UpdatePatientUseCase', () => {
     expect(mockPatientRepository.findById).not.toHaveBeenCalled();
     expect(mockPatientRepository.update).not.toHaveBeenCalled();
   });
+
+  it('should successfully update a patient with only one field', async () => {
+    const input: UpdatePatientInputDto = { id: 'patient-456', email: 'updated@example.com' };
+    const existingPatient = new Patient('patient-456', 'Another Patient', '1122334455', 'another@example.com');
+    const updatedPatient = new Patient('patient-456', 'Another Patient', '1122334455', 'updated@example.com');
+    mockPatientRepository.findById.mockResolvedValueOnce(existingPatient);
+    mockPatientRepository.update.mockResolvedValue(undefined);
+    mockPatientRepository.findById.mockResolvedValueOnce(updatedPatient);
+
+    const result = await updatePatientUseCase.execute(input);
+
+    expect(mockPatientRepository.findById).toHaveBeenCalledTimes(2);
+    expect(mockPatientRepository.findById).toHaveBeenCalledWith('patient-456');
+    expect(mockPatientRepository.update).toHaveBeenCalledTimes(1);
+    expect(mockPatientRepository.update).toHaveBeenCalledWith(updatedPatient);
+    expect(result).toEqual({
+      id: 'patient-456',
+      name: 'Another Patient',
+      phone: '1122334455',
+      email: 'updated@example.com',
+    });
+  });
 });
