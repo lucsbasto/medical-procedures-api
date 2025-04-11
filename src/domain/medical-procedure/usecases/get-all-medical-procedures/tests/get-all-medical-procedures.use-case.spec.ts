@@ -141,4 +141,26 @@ describe('GetAllMedicalProceduresUseCase', () => {
       },
     ]);
   });
+
+  it('should filter medical procedures by procedureDate greater than', async () => {
+    const filterDate = new Date('2025-04-11T10:30:00-03:00');
+    const filters: GetAllMedicalProceduresInputDto = { procedureDate: { gt: filterDate } };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure2]);
+
+    const result = await getAllMedicalProceduresUseCase.execute(filters);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        id: '2',
+        doctorId: 'doctor-2',
+        patientId: 'patient-2',
+        procedureDate: procedure2.procedureDate,
+        procedureValue: 200,
+        paymentStatus: PaymentStatus.PENDING,
+      },
+    ]);
+  });
 });
