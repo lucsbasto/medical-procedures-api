@@ -35,4 +35,15 @@ describe('GetAllPatientsUseCase', () => {
       { id: '2', name: 'Jane Smith', phone: '456', email: 'jane.smith@example.com' },
     ]);
   });
+
+  it('should return an empty array if there are no patients', async () => {
+    mockPatientRepository.findAll.mockResolvedValue([]);
+
+    const result = await getAllPatientsUseCase.execute();
+
+    expect(mockPatientRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockPatientRepository.findAll).toHaveBeenCalledWith(undefined);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
 });
