@@ -1,0 +1,8 @@
+{
+  "*.{js,jsx,ts,tsx,json,css,scss,less,html,md}": [
+    "biome format --write ."
+  ],
+  "HEAD": [
+    "commitlint --edit"
+  ]
+}
