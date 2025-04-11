@@ -29,4 +29,16 @@ describe('Patient', () => {
     expect(patient.phone).toBe(phone);
     expect(patient.email).toBe(email);
   });
+
+  it('should create a Patient with a correctly created Contact Value Object', () => {
+    const id = 'patient-789';
+    const name = 'Charlie Brown';
+    const phone = '1112223333';
+    const email = 'charlie@test.net';
+
+    const patient = new Patient(id, name, phone, email);
+
+    expect(patient.phone).toBe(phone.trim());
+    expect(patient.email).toBe(email ? email.trim() : undefined);
+  });
 });
