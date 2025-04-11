@@ -44,4 +44,15 @@ describe('GetDoctorByIdUseCase', () => {
       email: expectedDoctor.email,
     });
   });
+
+  it('should return null if the doctor with the given ID does not exist', async () => {
+    const input: GetDoctorByIdInputDto = { id: 'non-existent-id' };
+    mockDoctorRepository.findById.mockResolvedValue(null);
+
+    const result = await getDoctorByIdUseCase.execute(input);
+
+    expect(mockDoctorRepository.findById).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.findById).toHaveBeenCalledWith(input.id);
+    expect(result).toBeNull();
+  });
 });
