@@ -57,4 +57,12 @@ describe('UpdatePatientUseCase', () => {
     expect(mockPatientRepository.update).not.toHaveBeenCalled();
     expect(result).toBeNull();
   });
+
+  it('should throw an error if an empty ID is provided', async () => {
+    const input: UpdatePatientInputDto = { id: '', name: 'Updated Name' };
+
+    await expect(updatePatientUseCase.execute(input)).rejects.toThrow('Patient ID cannot be empty for update.');
+    expect(mockPatientRepository.findById).not.toHaveBeenCalled();
+    expect(mockPatientRepository.update).not.toHaveBeenCalled();
+  });
 });
