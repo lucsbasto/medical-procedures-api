@@ -226,4 +226,34 @@ describe('GetAllMedicalProceduresUseCase', () => {
       },
     ]);
   });
+
+  it('should filter medical procedures by procedureValue greater than', async () => {
+    const filterValue = 120;
+    const filters: GetAllMedicalProceduresInputDto = { procedureValue: { gt: filterValue } };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure2, procedure3]);
+
+    const result = await getAllMedicalProceduresUseCase.execute(filters);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(2);
+    expect(result).toEqual([
+      {
+        id: '2',
+        doctorId: 'doctor-2',
+        patientId: 'patient-2',
+        procedureDate: procedure2.procedureDate,
+        procedureValue: 200,
+        paymentStatus: PaymentStatus.PENDING,
+      },
+      {
+        id: '3',
+        doctorId: 'doctor-1',
+        patientId: 'patient-3',
+        procedureDate: procedure3.procedureDate,
+        procedureValue: 150,
+        paymentStatus: PaymentStatus.GLOSSED,
+      },
+    ]);
+  });
 });
