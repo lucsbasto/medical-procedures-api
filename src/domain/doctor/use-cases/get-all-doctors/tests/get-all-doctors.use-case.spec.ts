@@ -98,4 +98,31 @@ describe('GetAllDoctorsUseCase', () => {
       },
     ]);
   });
+
+  it('should filter doctors by specialty', async () => {
+    const filters: GetAllDoctorsInputDto = { specialty: 'dermatology' };
+    const doctors = [
+      new Doctor('1', 'Dr. John Doe', 'SP123456', 'Cardiology', '1199999999', 'john.doe@example.com'),
+      new Doctor('2', 'Dr. Jane Smith', 'RJ987654', 'Dermatology', '2188888888', 'jane.smith@example.com'),
+    ];
+    mockDoctorRepository.findAll.mockResolvedValue(
+      doctors.filter((d) => d.specialty.toLowerCase().includes(filters.specialty.toLowerCase())),
+    );
+
+    const result = await getAllDoctorsUseCase.execute(filters);
+
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        id: '2',
+        name: 'Dr. Jane Smith',
+        specialty: 'DERMATOLOGY',
+        crm: 'RJ987654',
+        phone: '2188888888',
+        email: 'jane.smith@example.com',
+      },
+    ]);
+  });
 });
