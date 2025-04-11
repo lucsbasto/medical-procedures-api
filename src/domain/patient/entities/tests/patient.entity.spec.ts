@@ -55,4 +55,14 @@ describe('Patient', () => {
     expect(patient.phone).toBe('5554443333');
     expect(patient.email).toBe('diana.l@work.org');
   });
+
+  it('should handle undefined email correctly', () => {
+    const id = 'patient-def';
+    const name = 'Eve Williams';
+    const phone = '9998887777';
+
+    const patient = new Patient(id, name, phone);
+
+    expect(patient.email).toBeUndefined();
+  });
 });
