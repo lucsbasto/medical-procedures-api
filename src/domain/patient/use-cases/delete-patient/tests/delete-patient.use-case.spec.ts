@@ -41,4 +41,12 @@ describe('DeletePatientUseCase', () => {
     expect(mockPatientRepository.findById).toHaveBeenCalledWith('non-existent-id');
     expect(mockPatientRepository.delete).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if an empty ID is provided', async () => {
+    const input: DeletePatientInputDto = { id: '' };
+
+    await expect(deletePatientUseCase.execute(input)).rejects.toThrow('Patient ID cannot be empty for deletion.');
+    expect(mockPatientRepository.findById).not.toHaveBeenCalled();
+    expect(mockPatientRepository.delete).not.toHaveBeenCalled();
+  });
 });
