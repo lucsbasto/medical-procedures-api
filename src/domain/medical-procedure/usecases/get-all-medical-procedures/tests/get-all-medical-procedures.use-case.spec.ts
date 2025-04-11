@@ -278,4 +278,25 @@ describe('GetAllMedicalProceduresUseCase', () => {
       },
     ]);
   });
+
+  it('should filter with combined value and other criteria', async () => {
+    const filters: GetAllMedicalProceduresInputDto = { doctorId: 'doctor-1', procedureValue: { gt: 100 } };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure3]);
+
+    const result = await getAllMedicalProceduresUseCase.execute(filters);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        id: '3',
+        doctorId: 'doctor-1',
+        patientId: 'patient-3',
+        procedureDate: procedure3.procedureDate,
+        procedureValue: 150,
+        paymentStatus: PaymentStatus.GLOSSED,
+      },
+    ]);
+  });
 });
