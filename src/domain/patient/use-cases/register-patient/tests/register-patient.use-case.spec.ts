@@ -51,4 +51,15 @@ describe('RegisterPatientUseCase', () => {
     await expect(registerPatientUseCase.execute(input)).rejects.toThrow('Patient name cannot be empty.');
     expect(mockPatientRepository.create).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if the patient phone number is empty', async () => {
+    const input: RegisterPatientInputDto = {
+      name: 'Wendy Darling',
+      phone: '',
+      email: 'wendy@neverland.com',
+    };
+
+    await expect(registerPatientUseCase.execute(input)).rejects.toThrow('Patient phone number is required.');
+    expect(mockPatientRepository.create).not.toHaveBeenCalled();
+  });
 });
