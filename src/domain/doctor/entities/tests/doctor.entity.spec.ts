@@ -70,4 +70,17 @@ describe('Doctor', () => {
     expect(doctor.phone).toBeUndefined();
     expect(doctor.email).toBeUndefined();
   });
+
+  it('should create a Doctor instance with only phone', () => {
+    const id = 'doctor-def';
+    const name = 'Dr. Charlie Green';
+    const crmValue = 'ba123789';
+    const specialtyValue = 'Ophthalmology';
+    const phone = '7166666666';
+
+    const doctor = new Doctor(id, name, crmValue, specialtyValue, phone);
+
+    expect(doctor.phone).toBe(phone);
+    expect(doctor.email).toBeUndefined();
+  });
 });
