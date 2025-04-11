@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Doctor } from '../../entities/doctor.entity';
 import { DoctorRepository } from '../../repositories/doctor.repository';
+import { DoctorOutputDto } from '../dtos/doctor-output.dto';
 import { RegisterDoctorInputDto } from '../dtos/register-doctor-input.dto';
-import { RegisterDoctorOutputDto } from '../dtos/register-doctor-output.dto';
 import { RegisterDoctorUseCaseInterface } from './register-doctor.use-case.interface';
 
 @Injectable()
 export class RegisterDoctorUseCase implements RegisterDoctorUseCaseInterface {
   constructor(private readonly doctorRepository: DoctorRepository) {}
 
-  async execute(input: RegisterDoctorInputDto): Promise<RegisterDoctorOutputDto> {
+  async execute(input: RegisterDoctorInputDto): Promise<DoctorOutputDto> {
     const { name, specialty, crm, phone, email } = input;
 
     if (!name || name.trim() === '') {

@@ -1,4 +1,4 @@
-export interface RegisterDoctorOutputDto {
+export interface DoctorOutputDto {
   id: string;
   name: string;
   specialty: string;
