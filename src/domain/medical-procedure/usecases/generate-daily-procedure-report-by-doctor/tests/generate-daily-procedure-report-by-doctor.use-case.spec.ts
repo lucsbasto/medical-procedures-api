@@ -124,4 +124,16 @@ describe('GenerateDailyProcedureReportByDoctorUseCase', () => {
       },
     ]);
   });
+
+  it('should return an empty array if there are no procedures for the given date', async () => {
+    const input: GenerateDailyProcedureReportByDoctorInputDto = { date: date_11_04 };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([]);
+
+    const result = await generateDailyProcedureReportByDoctorUseCase.execute(input);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+    expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
+  });
 });
