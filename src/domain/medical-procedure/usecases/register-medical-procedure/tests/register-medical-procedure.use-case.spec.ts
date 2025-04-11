@@ -54,4 +54,10 @@ describe('RegisterMedicalProcedureUseCase', () => {
       paymentStatus: input.paymentStatus,
     });
   });
+
+  it('should throw an error if doctorId is empty', async () => {
+    const input: RegisterMedicalProcedureInputDto = { ...validInput(), doctorId: '' };
+    await expect(registerMedicalProcedureUseCase.execute(input)).rejects.toThrow('Doctor ID cannot be empty.');
+    expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalled();
+  });
 });
