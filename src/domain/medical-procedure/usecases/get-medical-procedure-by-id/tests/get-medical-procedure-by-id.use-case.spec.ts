@@ -56,4 +56,13 @@ describe('GetMedicalProcedureByIdUseCase', () => {
     expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledWith(input.id);
     expect(result).toBeNull();
   });
+
+  it('should throw an error if an empty ID is provided', async () => {
+    const input: GetMedicalProcedureByIdInputDto = { id: '' };
+
+    await expect(getMedicalProcedureByIdUseCase.execute(input)).rejects.toThrow(
+      'Medical procedure ID cannot be empty.',
+    );
+    expect(mockMedicalProcedureRepository.findById).not.toHaveBeenCalled();
+  });
 });
