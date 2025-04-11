@@ -54,4 +54,11 @@ describe('GetPatientByIdUseCase', () => {
     await expect(getPatientByIdUseCase.execute(input)).rejects.toThrow('Patient ID cannot be empty.');
     expect(mockPatientRepository.findById).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if an ID with only whitespace is provided', async () => {
+    const input: GetPatientByIdInputDto = { id: '   ' };
+
+    await expect(getPatientByIdUseCase.execute(input)).rejects.toThrow('Patient ID cannot be empty.');
+    expect(mockPatientRepository.findById).not.toHaveBeenCalled();
+  });
 });
