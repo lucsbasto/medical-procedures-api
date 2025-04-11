@@ -1,5 +1,3 @@
-// src/domain/doctor/entities/doctor.entity.spec.ts
-
 import { Doctor } from '../doctor.entity';
 
 describe('Doctor', () => {
