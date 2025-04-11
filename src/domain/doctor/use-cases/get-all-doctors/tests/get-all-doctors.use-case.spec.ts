@@ -125,4 +125,35 @@ describe('GetAllDoctorsUseCase', () => {
       },
     ]);
   });
+
+  it('should handle multiple filters', async () => {
+    const filters: GetAllDoctorsInputDto = { name: 'john', specialty: 'cardiology' };
+    const doctors = [
+      new Doctor('1', 'Dr. John Doe', 'SP123456', 'Cardiology', '1199999999', 'john.doe@example.com'),
+      new Doctor('2', 'Dr. Johnny Bravo', 'MG112233', 'Neurology', '3177777777', 'johnny.bravo@example.com'),
+    ];
+    mockDoctorRepository.findAll.mockResolvedValue(
+      doctors.filter(
+        (d) =>
+          d.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+          d.specialty.toLowerCase().includes(filters.specialty.toLowerCase()),
+      ),
+    );
+
+    const result = await getAllDoctorsUseCase.execute(filters);
+
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        id: '1',
+        name: 'Dr. John Doe',
+        specialty: 'CARDIOLOGY',
+        crm: 'SP123456',
+        phone: '1199999999',
+        email: 'john.doe@example.com',
+      },
+    ]);
+  });
 });
