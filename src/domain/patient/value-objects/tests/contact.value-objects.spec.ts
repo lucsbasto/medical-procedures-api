@@ -23,4 +23,9 @@ describe('Contact', () => {
     expect(contact.phone).toBe('1112223333');
     expect(contact.email).toBe('test@example.com');
   });
+
+  it('should throw an error if phone is empty', () => {
+    expect(() => Contact.create('')).toThrow('Patient contact phone cannot be empty.');
+    expect(() => Contact.create('   ')).toThrow('Patient contact phone cannot be empty.');
+  });
 });
