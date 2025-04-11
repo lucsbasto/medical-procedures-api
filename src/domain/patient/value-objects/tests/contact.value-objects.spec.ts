@@ -59,4 +59,10 @@ describe('Contact', () => {
     const contact2 = Contact.create('333', 'c@c.com');
     expect(contact1.equals(contact2)).toBe(false);
   });
+
+  it('should not be equal to another Contact with one having email and the other not', () => {
+    const contact1 = Contact.create('444', 'd@d.com');
+    const contact2 = Contact.create('444', undefined);
+    expect(contact1.equals(contact2)).toBe(false);
+  });
 });
