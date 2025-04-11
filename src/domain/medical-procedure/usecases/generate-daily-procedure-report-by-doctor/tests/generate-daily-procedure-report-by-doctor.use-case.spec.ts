@@ -34,6 +34,7 @@ describe('GenerateDailyProcedureReportByDoctorUseCase', () => {
   });
 
   const date_11_04 = new Date('2025-04-11T12:00:00-03:00');
+  const date_10_04 = new Date('2025-04-10T12:00:00-03:00');
 
   const procedure1 = new MedicalProcedure(
     '1',
@@ -54,6 +55,7 @@ describe('GenerateDailyProcedureReportByDoctorUseCase', () => {
     PaymentStatus.PENDING,
   );
   const procedure3 = new MedicalProcedure('3', 'doctor-1', 'patient-3', 'Retorno', date_11_04, 50, PaymentStatus.PAID);
+  const procedure4 = new MedicalProcedure('4', 'doctor-1', 'patient-4', 'Curativo', date_10_04, 30, PaymentStatus.PAID);
 
   const doctor1 = new Doctor('doctor-1', 'Dr. João', 'SP-123451', 'Cardiologia');
   const doctor2 = new Doctor('doctor-2', 'Dra. Maria', 'TO-678910', 'Dermatologia');
@@ -174,5 +176,35 @@ describe('GenerateDailyProcedureReportByDoctorUseCase', () => {
     );
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
+  });
+
+  it('should only include procedures from the specified date', async () => {
+    const input: GenerateDailyProcedureReportByDoctorInputDto = { date: date_10_04 };
+
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure4]);
+    mockDoctorRepository.findById.mockResolvedValue(doctor1);
+
+    const result = await generateDailyProcedureReportByDoctorUseCase.execute(input);
+
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        doctorId: 'doctor-1',
+        doctorName: 'Dr. João',
+        procedures: [
+          {
+            id: '4',
+            doctorId: 'doctor-1',
+            patientId: 'patient-4',
+            procedureDate: procedure4.procedureDate,
+            procedureValue: 30,
+            paymentStatus: PaymentStatus.PAID,
+            procedureName: 'Curativo',
+          },
+        ],
+        totalProcedures: 1,
+        totalValue: 30,
+      },
+    ]);
   });
 });
