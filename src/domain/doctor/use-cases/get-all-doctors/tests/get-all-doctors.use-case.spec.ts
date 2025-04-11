@@ -1,5 +1,6 @@
 import { Doctor } from '@/domain/doctor/entities/doctor.entity';
 import { DoctorRepository } from '@/domain/doctor/repositories/doctor.repository';
+import { GetAllDoctorsInputDto } from '../../dtos/get-all-doctors-input.dto';
 import { GetAllDoctorsUseCase } from '../get-all-doctors.use-case';
 
 const mockDoctorRepository: jest.Mocked<DoctorRepository> = {
@@ -60,5 +61,41 @@ describe('GetAllDoctorsUseCase', () => {
     expect(mockDoctorRepository.findAll).toHaveBeenCalledWith(undefined);
     expect(result).toHaveLength(0);
     expect(result).toEqual([]);
+  });
+
+  it('should filter doctors by name', async () => {
+    const filters: GetAllDoctorsInputDto = { name: 'john' };
+    const doctors = [
+      new Doctor('1', 'Dr. John Doe', 'SP123456', 'Cardiology', '1199999999', 'john.doe@example.com'),
+      new Doctor('2', 'Dr. Jane Smith', 'RJ987654', 'Dermatology', '2188888888', 'jane.smith@example.com'),
+      new Doctor('3', 'Dr. Johnny Bravo', 'MG112233', 'Neurology', '3177777777', 'johnny.bravo@example.com'),
+    ];
+    mockDoctorRepository.findAll.mockResolvedValue(
+      doctors.filter((d) => d.name.toLowerCase().includes(filters.name.toLowerCase())),
+    );
+
+    const result = await getAllDoctorsUseCase.execute(filters);
+
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(2);
+    expect(result).toEqual([
+      {
+        id: '1',
+        name: 'Dr. John Doe',
+        specialty: 'CARDIOLOGY',
+        crm: 'SP123456',
+        phone: '1199999999',
+        email: 'john.doe@example.com',
+      },
+      {
+        id: '3',
+        name: 'Dr. Johnny Bravo',
+        specialty: 'NEUROLOGY',
+        crm: 'MG112233',
+        phone: '3177777777',
+        email: 'johnny.bravo@example.com',
+      },
+    ]);
   });
 });
