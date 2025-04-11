@@ -36,7 +36,7 @@ export class CRM extends ValueObject<CrmProps> {
       throw new Error('O CRM deve começar com duas letras representando o estado.');
     }
 
-    if (numbers.length === 0 || isNaN(parseInt(numbers, 10))) {
+    if (numbers.length === 0 || Number.isNaN(parseInt(numbers, 10))) {
       throw new Error('O CRM deve conter números após a sigla do estado.');
     }
   }
