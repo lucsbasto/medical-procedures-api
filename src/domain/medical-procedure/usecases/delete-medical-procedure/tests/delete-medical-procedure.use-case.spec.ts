@@ -51,4 +51,14 @@ describe('DeleteMedicalProcedureUseCase', () => {
     expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledWith(input.id);
     expect(mockMedicalProcedureRepository.delete).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if an empty ID is provided', async () => {
+    const input: DeleteMedicalProcedureInputDto = { id: '' };
+
+    await expect(deleteMedicalProcedureUseCase.execute(input)).rejects.toThrow(
+      'Medical procedure ID cannot be empty for deletion.',
+    );
+    expect(mockMedicalProcedureRepository.findById).not.toHaveBeenCalled();
+    expect(mockMedicalProcedureRepository.delete).not.toHaveBeenCalled();
+  });
 });
