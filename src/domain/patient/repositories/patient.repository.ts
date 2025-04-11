@@ -1,7 +1,7 @@
 import { Patient } from '../entities/patient.entity';
 
 export interface PatientRepository {
-  create(patient: Patient): Promise<void>;
+  create(patient: Patient): Promise<Patient>;
   findById(id: string): Promise<Patient | null>;
   findByName(name: string): Promise<Patient[]>;
   findAll(): Promise<Patient[]>;
