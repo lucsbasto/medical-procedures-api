@@ -15,4 +15,12 @@ describe('Contact', () => {
     expect(contact.phone).toBe(phone);
     expect(contact.email).toBe(email);
   });
+
+  it('should trim whitespace from phone and email', () => {
+    const phoneWithSpaces = '  1112223333  ';
+    const emailWithSpaces = '  test@example.com  ';
+    const contact = Contact.create(phoneWithSpaces, emailWithSpaces);
+    expect(contact.phone).toBe('1112223333');
+    expect(contact.email).toBe('test@example.com');
+  });
 });
