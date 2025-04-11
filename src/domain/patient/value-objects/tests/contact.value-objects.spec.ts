@@ -47,4 +47,10 @@ describe('Contact', () => {
     const contact2 = Contact.create('54321', undefined);
     expect(contact1.equals(contact2)).toBe(true);
   });
+
+  it('should not be equal to another Contact with a different phone', () => {
+    const contact1 = Contact.create('111', 'a@a.com');
+    const contact2 = Contact.create('222', 'a@a.com');
+    expect(contact1.equals(contact2)).toBe(false);
+  });
 });
