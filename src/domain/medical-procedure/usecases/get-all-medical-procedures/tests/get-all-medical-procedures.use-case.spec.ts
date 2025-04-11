@@ -163,4 +163,25 @@ describe('GetAllMedicalProceduresUseCase', () => {
       },
     ]);
   });
+
+  it('should handle multiple filters', async () => {
+    const filters: GetAllMedicalProceduresInputDto = { doctorId: 'doctor-1', paymentStatus: PaymentStatus.PAID };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1]);
+
+    const result = await getAllMedicalProceduresUseCase.execute(filters);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        id: '1',
+        doctorId: 'doctor-1',
+        patientId: 'patient-1',
+        procedureDate: procedure1.procedureDate,
+        procedureValue: 100,
+        paymentStatus: PaymentStatus.PAID,
+      },
+    ]);
+  });
 });
