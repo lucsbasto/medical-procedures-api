@@ -83,4 +83,17 @@ describe('Doctor', () => {
     expect(doctor.phone).toBe(phone);
     expect(doctor.email).toBeUndefined();
   });
+
+  it('should create a Doctor instance with only email', () => {
+    const id = 'doctor-ghi';
+    const name = 'Dr. Diana White';
+    const crmValue = 'pr987123';
+    const specialtyValue = 'Orthopedics';
+    const email = 'diana.white@example.com';
+
+    const doctor = new Doctor(id, name, crmValue, specialtyValue, undefined, email);
+
+    expect(doctor.phone).toBeUndefined();
+    expect(doctor.email).toBe(email);
+  });
 });
