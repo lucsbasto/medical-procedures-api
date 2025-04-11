@@ -95,7 +95,7 @@ describe('RegisterDoctorUseCase', () => {
     expect(result).toEqual({
       id: generatedId,
       name: input.name,
-      speciality: input.specialty.toUpperCase().trim(),
+      specialty: input.specialty.toUpperCase().trim(),
       crm: input.crm.toUpperCase(),
       phone: undefined,
       email: undefined,
