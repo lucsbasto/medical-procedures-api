@@ -69,4 +69,20 @@ describe('GetAllPatientsUseCase', () => {
       { id: '3', name: 'Johnny Bravo', phone: '789', email: 'johnny.bravo@example.com' },
     ]);
   });
+
+  it('should filter patients by phone', async () => {
+    const filters: GetAllPatientsInputDto = { phone: '456' };
+    const patients = [
+      new Patient('1', 'John Doe', '123', 'john.doe@example.com'),
+      new Patient('2', 'Jane Smith', '456', 'jane.smith@example.com'),
+    ];
+    mockPatientRepository.findAll.mockResolvedValue(patients.filter((p) => p.phone.includes(filters.phone)));
+
+    const result = await getAllPatientsUseCase.execute(filters);
+
+    expect(mockPatientRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockPatientRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([{ id: '2', name: 'Jane Smith', phone: '456', email: 'jane.smith@example.com' }]);
+  });
 });
