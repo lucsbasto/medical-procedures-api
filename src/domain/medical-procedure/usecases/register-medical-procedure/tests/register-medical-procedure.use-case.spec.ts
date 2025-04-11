@@ -84,4 +84,10 @@ describe('RegisterMedicalProcedureUseCase', () => {
     );
     expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalledTimes(2);
   });
+
+  it('should throw an error if paymentStatus is empty', async () => {
+    const input: RegisterMedicalProcedureInputDto = { ...validInput(), paymentStatus: undefined as any };
+    await expect(registerMedicalProcedureUseCase.execute(input)).rejects.toThrow('Payment status cannot be empty.');
+    expect(mockMedicalProcedureRepository.create).not.toHaveBeenCalled();
+  });
 });
