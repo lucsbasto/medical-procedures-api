@@ -40,4 +40,29 @@ describe('MedicalProcedure', () => {
       );
     }).toThrow('Invalid payment status: invalid-status. Allowed statuses are: PAID, PENDING, GLOSSED');
   });
+
+  it('should correctly retrieve MedicalProcedure properties', () => {
+    const id = 'procedure-789';
+    const doctorId = 'doctor-ghi';
+    const patientId = 'patient-rst';
+    const procedureDate = new Date('2025-04-15');
+    const procedureValue = 200.75;
+    const paymentStatus = PaymentStatus.PENDING;
+
+    const medicalProcedure = new MedicalProcedure(
+      id,
+      doctorId,
+      patientId,
+      procedureDate,
+      procedureValue,
+      paymentStatus,
+    );
+
+    expect(medicalProcedure.id).toBe('procedure-789');
+    expect(medicalProcedure.doctorId).toBe('doctor-ghi');
+    expect(medicalProcedure.patientId).toBe('patient-rst');
+    expect(medicalProcedure.procedureDate).toEqual(new Date('2025-04-15'));
+    expect(medicalProcedure.procedureValue).toBe(200.75);
+    expect(medicalProcedure.paymentStatus).toBe(PaymentStatus.PENDING);
+  });
 });
