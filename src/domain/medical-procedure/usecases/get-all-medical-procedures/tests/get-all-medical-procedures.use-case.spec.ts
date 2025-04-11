@@ -79,4 +79,15 @@ describe('GetAllMedicalProceduresUseCase', () => {
       },
     ]);
   });
+
+  it('should return an empty array if there are no medical procedures', async () => {
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([]);
+
+    const result = await getAllMedicalProceduresUseCase.execute();
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(undefined);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
 });
