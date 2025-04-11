@@ -184,4 +184,16 @@ describe('GetAllMedicalProceduresUseCase', () => {
       },
     ]);
   });
+
+  it('should return an empty array if no medical procedures match the filters', async () => {
+    const filters: GetAllMedicalProceduresInputDto = { doctorId: 'non-existent' };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([]);
+
+    const result = await getAllMedicalProceduresUseCase.execute(filters);
+
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith(filters);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
 });
