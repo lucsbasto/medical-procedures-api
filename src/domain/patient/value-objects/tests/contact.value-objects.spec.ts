@@ -28,4 +28,11 @@ describe('Contact', () => {
     expect(() => Contact.create('')).toThrow('Patient contact phone cannot be empty.');
     expect(() => Contact.create('   ')).toThrow('Patient contact phone cannot be empty.');
   });
+
+  it('should throw an error if email format is invalid', () => {
+    const phone = '5556667777';
+    expect(() => Contact.create(phone, 'invalid-email')).toThrow('Invalid email format.');
+    expect(() => Contact.create(phone, 'test@example')).toThrow('Invalid email format.');
+    expect(() => Contact.create(phone, '@example.com')).toThrow('Invalid email format.');
+  });
 });
