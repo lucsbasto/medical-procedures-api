@@ -14,7 +14,7 @@ export class CRM extends ValueObject<CrmProps> {
   }
 
   public static create(value: string): CRM {
-    const trimmedValue = value.replace(/\s/g, '').toUpperCase();
+    const trimmedValue = value.replace(/[^\w]|_/g, '').toUpperCase();
 
     CRM.validate(trimmedValue);
     return new CRM({ value: trimmedValue.trim().toUpperCase() });
