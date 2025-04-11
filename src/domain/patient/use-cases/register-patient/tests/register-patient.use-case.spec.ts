@@ -1,6 +1,6 @@
 import { Patient } from '@/domain/patient/entities/patient.entity';
 import { PatientRepository } from '@/domain/patient/repositories/patient.repository';
-import { RegisterPatientInputDto } from '../dtos/register-patient-input.dto';
+import { RegisterPatientInputDto } from '../../dtos/register-patient-input.dto';
 import { RegisterPatientUseCase } from '../register-patient.use-case';
 
 const mockPatientRepository: jest.Mocked<PatientRepository> = {

@@ -1,6 +1,6 @@
 import { PatientRepository } from '@/domain/patient/repositories/patient.repository';
+import { DeletePatientInputDto } from '../../dtos/delete-patient-input.dto';
 import { DeletePatientUseCase } from '../delete-patient.use-case';
-import { DeletePatientInputDto } from '../dtos/delete-patient-input.dto';
 
 const mockPatientRepository: jest.Mocked<PatientRepository> = {
   create: jest.fn(),

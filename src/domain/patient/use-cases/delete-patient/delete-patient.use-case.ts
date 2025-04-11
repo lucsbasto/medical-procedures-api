@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PatientRepository } from '../../repositories/patient.repository';
+import { DeletePatientInputDto } from '../dtos/delete-patient-input.dto';
 import { DeletePatientUseCaseInterface } from './delete-patient.use-case.interface';
-import { DeletePatientInputDto } from './dtos/delete-patient-input.dto';
 
 @Injectable()
 export class DeletePatientUseCase implements DeletePatientUseCaseInterface {

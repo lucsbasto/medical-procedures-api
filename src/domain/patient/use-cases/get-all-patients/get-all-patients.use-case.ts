@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PatientRepository } from '../../repositories/patient.repository';
-import { GetPatientByIdOutputDto } from '../get-patient-by-id/dtos/get-patient-by-id-output.dto';
-import { GetAllPatientsInputDto } from './dtos/get-all-patients-input.dto';
+import { GetAllPatientsInputDto } from '../dtos/get-all-patients-input.dto';
+import { GetPatientByIdOutputDto } from '../dtos/get-patient-by-id-output.dto';
 import { GetAllPatientsUseCaseInterface } from './get-all-patients.use-case.interface';
 
 @Injectable()
