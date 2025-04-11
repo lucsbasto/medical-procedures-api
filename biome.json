@@ -52,7 +52,7 @@
   },
 
   "files": {
-    "ignore": ["node_modules", "dist/**", "src/infrastructure/databases/migrations"],
+    "ignore": ["node_modules", "dist/**", "src/infrastructure/databases/migrations", ".vscode"],
     "include": ["src/**/*.ts"]
   }
 }
