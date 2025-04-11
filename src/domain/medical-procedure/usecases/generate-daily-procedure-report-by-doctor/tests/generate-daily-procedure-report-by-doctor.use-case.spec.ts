@@ -136,4 +136,33 @@ describe('GenerateDailyProcedureReportByDoctorUseCase', () => {
     expect(result).toEqual([]);
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
   });
+
+  it('should handle doctors not found in the DoctorRepository', async () => {
+    const input: GenerateDailyProcedureReportByDoctorInputDto = { date: date_11_04 };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1]);
+    mockDoctorRepository.findById.mockResolvedValue(null);
+
+    const result = await generateDailyProcedureReportByDoctorUseCase.execute(input);
+
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      {
+        doctorId: 'doctor-1',
+        doctorName: 'Unknown Doctor',
+        procedures: [
+          {
+            id: '1',
+            doctorId: 'doctor-1',
+            patientId: 'patient-1',
+            procedureDate: procedure1.procedureDate,
+            procedureValue: 100,
+            paymentStatus: PaymentStatus.PAID,
+            procedureName: 'Consulta',
+          },
+        ],
+        totalProcedures: 1,
+        totalValue: 100,
+      },
+    ]);
+  });
 });
