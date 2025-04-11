@@ -41,4 +41,10 @@ describe('Contact', () => {
     const contact2 = Contact.create('12345', 'test@test.com');
     expect(contact1.equals(contact2)).toBe(true);
   });
+
+  it('should be equal to another Contact with the same phone and undefined email', () => {
+    const contact1 = Contact.create('54321', undefined);
+    const contact2 = Contact.create('54321', undefined);
+    expect(contact1.equals(contact2)).toBe(true);
+  });
 });
