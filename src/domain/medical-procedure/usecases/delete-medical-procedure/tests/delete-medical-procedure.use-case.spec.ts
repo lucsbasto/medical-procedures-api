@@ -40,4 +40,15 @@ describe('DeleteMedicalProcedureUseCase', () => {
     expect(mockMedicalProcedureRepository.delete).toHaveBeenCalledTimes(1);
     expect(mockMedicalProcedureRepository.delete).toHaveBeenCalledWith(input.id);
   });
+
+  it('should not call delete if the medical procedure with the given ID does not exist (implementation choice)', async () => {
+    const input: DeleteMedicalProcedureInputDto = { id: 'non-existent-id' };
+    mockMedicalProcedureRepository.findById.mockResolvedValue(null);
+
+    await deleteMedicalProcedureUseCase.execute(input);
+
+    expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledTimes(1);
+    expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledWith(input.id);
+    expect(mockMedicalProcedureRepository.delete).not.toHaveBeenCalled();
+  });
 });
