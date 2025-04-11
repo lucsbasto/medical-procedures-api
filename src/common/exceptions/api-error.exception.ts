@@ -1,7 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { AppException } from './app.exception';
 
-// Should ONLY be used in server, database and unknown errors
 export class ApiError extends AppException {
   constructor(message: string, internalDetails?: unknown, isToAlert?: boolean) {
     const warning =
