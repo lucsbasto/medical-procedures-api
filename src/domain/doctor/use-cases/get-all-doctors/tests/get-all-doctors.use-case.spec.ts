@@ -50,4 +50,15 @@ describe('GetAllDoctorsUseCase', () => {
       },
     ]);
   });
+
+  it('should return an empty array if there are no doctors', async () => {
+    mockDoctorRepository.findAll.mockResolvedValue([]);
+
+    const result = await getAllDoctorsUseCase.execute();
+
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.findAll).toHaveBeenCalledWith(undefined);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
 });
