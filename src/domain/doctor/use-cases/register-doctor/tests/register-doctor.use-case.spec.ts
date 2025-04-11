@@ -77,4 +77,28 @@ describe('RegisterDoctorUseCase', () => {
     await expect(registerDoctorUseCase.execute(input)).rejects.toThrow('Doctor CRM cannot be empty.');
     expect(mockDoctorRepository.create).not.toHaveBeenCalled();
   });
+
+  it('should successfully register a doctor without phone and email', async () => {
+    const input: RegisterDoctorInputDto = {
+      name: 'Dr. Jane Smith',
+      specialty: 'Dermatology',
+      crm: 'RJ987654',
+    };
+    const generatedId = 'doctor-456';
+    const expectedDoctor = new Doctor(generatedId, input.name, input.crm, input.specialty);
+    mockDoctorRepository.create.mockResolvedValue(expectedDoctor);
+
+    const result = await registerDoctorUseCase.execute(input);
+
+    expect(mockDoctorRepository.create).toHaveBeenCalledTimes(1);
+    expect(mockDoctorRepository.create).toHaveBeenCalledWith(expect.any(Doctor));
+    expect(result).toEqual({
+      id: generatedId,
+      name: input.name,
+      speciality: input.specialty.toUpperCase().trim(),
+      crm: input.crm.toUpperCase(),
+      phone: undefined,
+      email: undefined,
+    });
+  });
 });
