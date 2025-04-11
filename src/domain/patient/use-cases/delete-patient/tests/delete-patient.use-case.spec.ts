@@ -30,4 +30,15 @@ describe('DeletePatientUseCase', () => {
     expect(mockPatientRepository.delete).toHaveBeenCalledTimes(1);
     expect(mockPatientRepository.delete).toHaveBeenCalledWith('patient-123');
   });
+
+  it('should not call delete if the patient ID does not exist', async () => {
+    const input: DeletePatientInputDto = { id: 'non-existent-id' };
+    mockPatientRepository.findById.mockResolvedValue(null);
+
+    await deletePatientUseCase.execute(input);
+
+    expect(mockPatientRepository.findById).toHaveBeenCalledTimes(1);
+    expect(mockPatientRepository.findById).toHaveBeenCalledWith('non-existent-id');
+    expect(mockPatientRepository.delete).not.toHaveBeenCalled();
+  });
 });
