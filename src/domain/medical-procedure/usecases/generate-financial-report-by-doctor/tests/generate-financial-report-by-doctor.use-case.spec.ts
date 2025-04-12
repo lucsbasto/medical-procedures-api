@@ -146,13 +146,13 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
     });
     expect(result).toHaveLength(1);
     expect(result).toEqual([
-      expect.objectContaining({
+      {
         doctorId: 'doctor-1',
         doctorName: 'Dr. João',
         totalPaid: 100,
         totalPending: 50,
         totalDenied: 120,
-      }),
+      },
     ]);
   });
 
@@ -175,12 +175,12 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
 
     expect(result).toHaveLength(1);
     expect(result).toEqual([
-      expect.objectContaining({
+      {
         doctorId: 'doctor-1',
         totalPaid: 100,
         totalPending: 0,
         totalDenied: 0,
-      }),
+      },
     ]);
   });
 });
