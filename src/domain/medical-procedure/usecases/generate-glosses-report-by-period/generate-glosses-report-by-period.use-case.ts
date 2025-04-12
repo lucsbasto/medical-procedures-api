@@ -40,7 +40,6 @@ export class GenerateGlossesReportByPeriodUseCase implements GenerateGlossesRepo
     const report: GenerateGlossesReportByPeriodOutputDto = [];
 
     for (const procedure of glossedProcedures) {
-      console.log('Payment Status:', procedure.paymentStatus);
       let doctorName: string | undefined;
       const doctor = await this.doctorRepository.findById(procedure.doctorId);
       if (doctor) {
