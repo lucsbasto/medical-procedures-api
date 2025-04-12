@@ -155,4 +155,14 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
       }),
     ]);
   });
+
+  it('should return an empty array if no procedures are found within the period', async () => {
+    const input: GenerateFinancialReportByDoctorInputDto = { startDate, endDate };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([]);
+
+    const result = await generateFinancialReportByDoctorUseCase.execute(input);
+
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
 });
