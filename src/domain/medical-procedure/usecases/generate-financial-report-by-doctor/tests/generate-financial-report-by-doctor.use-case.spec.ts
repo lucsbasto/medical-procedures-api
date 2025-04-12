@@ -193,4 +193,14 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if endDate is not provided', async () => {
+    const input: GenerateFinancialReportByDoctorInputDto = { startDate, endDate: undefined as any };
+
+    await expect(generateFinancialReportByDoctorUseCase.execute(input)).rejects.toThrow(
+      'Start date and end date must be provided for the financial report.',
+    );
+    expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
+    expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
+  });
 });
