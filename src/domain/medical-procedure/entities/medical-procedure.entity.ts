@@ -31,7 +31,7 @@ export class MedicalProcedure {
     this.validatePaymentStatus();
     this.validateProcedureName();
     this.validateProcedureValue();
-    this.validateDenialReason(); // Adicionando a nova validação
+    this.validateDenialReason();
   }
 
   get id(): string {
