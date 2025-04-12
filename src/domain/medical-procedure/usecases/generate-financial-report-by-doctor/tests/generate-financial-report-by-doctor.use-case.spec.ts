@@ -165,4 +165,22 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
     expect(result).toHaveLength(0);
     expect(result).toEqual([]);
   });
+
+  it('should handle doctors not found in the DoctorRepository', async () => {
+    const input: GenerateFinancialReportByDoctorInputDto = { startDate, endDate };
+    mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1]);
+    mockDoctorRepository.findById.mockResolvedValue(null);
+
+    const result = await generateFinancialReportByDoctorUseCase.execute(input);
+
+    expect(result).toHaveLength(1);
+    expect(result).toEqual([
+      expect.objectContaining({
+        doctorId: 'doctor-1',
+        totalPaid: 100,
+        totalPending: 0,
+        totalDenied: 0,
+      }),
+    ]);
+  });
 });
