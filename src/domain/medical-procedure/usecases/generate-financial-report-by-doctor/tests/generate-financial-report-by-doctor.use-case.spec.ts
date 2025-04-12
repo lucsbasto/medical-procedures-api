@@ -183,4 +183,14 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
       },
     ]);
   });
+
+  it('should throw an error if startDate is not provided', async () => {
+    const input: GenerateFinancialReportByDoctorInputDto = { startDate: undefined as any, endDate };
+
+    await expect(generateFinancialReportByDoctorUseCase.execute(input)).rejects.toThrow(
+      'Start date and end date must be provided for the financial report.',
+    );
+    expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
+    expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
+  });
 });
