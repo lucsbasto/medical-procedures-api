@@ -19,6 +19,7 @@ export class GetAllMedicalProceduresUseCase implements GetAllMedicalProceduresUs
       procedureDate: procedure.procedureDate,
       procedureValue: procedure.procedureValue,
       paymentStatus: procedure.paymentStatus,
+      denialReason: procedure.denialReason,
     }));
   }
 }
