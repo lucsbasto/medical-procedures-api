@@ -203,4 +203,14 @@ describe('GenerateFinancialReportByDoctorUseCase', () => {
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
   });
+
+  it('should throw an error if startDate is after endDate', async () => {
+    const input: GenerateFinancialReportByDoctorInputDto = { startDate: endDate, endDate: startDate };
+
+    await expect(generateFinancialReportByDoctorUseCase.execute(input)).rejects.toThrow(
+      'Start date cannot be after the end date.',
+    );
+    expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
+    expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
+  });
 });
