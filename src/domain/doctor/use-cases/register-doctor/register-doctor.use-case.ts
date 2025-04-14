@@ -25,7 +25,7 @@ export class RegisterDoctorUseCase implements RegisterDoctorUseCaseInterface {
       throw new Error('Doctor CRM cannot be empty.');
     }
 
-    const doctor = new Doctor('', name, crm, specialty, phone, email);
+    const doctor = new Doctor(undefined, name, crm, specialty, phone, email);
     const createdDoctor = await this.doctorRepository.create(doctor);
 
     return {
