@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MedicalProcedure } from '../../entities/medical-procedure.entity';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
 
@@ -8,7 +8,10 @@ import { UpdateMedicalProcedureUseCaseInterface } from './update-medical-procedu
 
 @Injectable()
 export class UpdateMedicalProcedureUseCase implements UpdateMedicalProcedureUseCaseInterface {
-  constructor(private readonly medicalProcedureRepository: MedicalProcedureRepository) {}
+  constructor(
+    @Inject('MedicalProcedureRepository')
+    private readonly medicalProcedureRepository: MedicalProcedureRepository,
+  ) {}
 
   async execute(input: UpdateMedicalProcedureInputDto): Promise<MedicalProcedureOutputDto | null> {
     const { id, doctorId, patientId, procedureDate, procedureValue, paymentStatus, procedureName } = input;
@@ -59,6 +62,7 @@ export class UpdateMedicalProcedureUseCase implements UpdateMedicalProcedureUseC
       procedureDate: retrievedUpdatedProcedure.procedureDate,
       procedureValue: retrievedUpdatedProcedure.procedureValue,
       paymentStatus: retrievedUpdatedProcedure.paymentStatus,
+      denialReason: retrievedUpdatedProcedure.denialReason,
     };
   }
 }

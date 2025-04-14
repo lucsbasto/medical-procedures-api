@@ -51,6 +51,7 @@ export class GenerateDailyProcedureReportByDoctorUseCase
         procedureDate: procedure.procedureDate,
         procedureValue: procedure.procedureValue,
         paymentStatus: procedure.paymentStatus,
+        denialReason: procedure.denialReason,
       });
     }
 

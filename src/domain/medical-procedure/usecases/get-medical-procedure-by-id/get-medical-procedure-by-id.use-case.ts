@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
-import { GetMedicalProcedureByIdInputDto } from '../dtos/get-medical-procedure-by-id-input.dto';
 import { MedicalProcedureOutputDto } from '../dtos/medical-procedure-output.dto';
 import { GetMedicalProcedureByIdUseCaseInterface } from './get-medical-procedure-by-id.use-case.interface';
 
 @Injectable()
 export class GetMedicalProcedureByIdUseCase implements GetMedicalProcedureByIdUseCaseInterface {
-  constructor(private readonly medicalProcedureRepository: MedicalProcedureRepository) {}
+  constructor(
+    @Inject('MedicalProcedureRepository')
+    private readonly medicalProcedureRepository: MedicalProcedureRepository,
+  ) {}
 
-  async execute(input: GetMedicalProcedureByIdInputDto): Promise<MedicalProcedureOutputDto | null> {
-    const { id } = input;
-
+  async execute(id: string): Promise<MedicalProcedureOutputDto | null> {
     if (!id || id.trim() === '') {
       throw new Error('Medical procedure ID cannot be empty.');
     }
@@ -29,6 +29,7 @@ export class GetMedicalProcedureByIdUseCase implements GetMedicalProcedureByIdUs
       procedureDate: medicalProcedure.procedureDate,
       procedureValue: medicalProcedure.procedureValue,
       paymentStatus: medicalProcedure.paymentStatus,
+      denialReason: medicalProcedure.denialReason,
     };
   }
 }

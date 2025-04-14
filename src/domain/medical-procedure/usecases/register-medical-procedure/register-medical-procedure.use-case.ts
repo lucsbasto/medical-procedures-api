@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MedicalProcedure } from '../../entities/medical-procedure.entity';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
 import { MedicalProcedureOutputDto } from '../dtos/medical-procedure-output.dto';
@@ -7,7 +7,10 @@ import { RegisterMedicalProcedureUseCaseInterface } from './register-medical-pro
 
 @Injectable()
 export class RegisterMedicalProcedureUseCase implements RegisterMedicalProcedureUseCaseInterface {
-  constructor(private readonly medicalProcedureRepository: MedicalProcedureRepository) {}
+  constructor(
+    @Inject('MedicalProcedureRepository')
+    private readonly medicalProcedureRepository: MedicalProcedureRepository,
+  ) {}
 
   async execute(input: RegisterMedicalProcedureInputDto): Promise<MedicalProcedureOutputDto> {
     const { doctorId, patientId, procedureDate, procedureValue, paymentStatus, procedureName } = input;
@@ -33,7 +36,7 @@ export class RegisterMedicalProcedureUseCase implements RegisterMedicalProcedure
     }
 
     const medicalProcedure = new MedicalProcedure(
-      '',
+      undefined,
       doctorId,
       patientId,
       procedureName,
@@ -52,6 +55,7 @@ export class RegisterMedicalProcedureUseCase implements RegisterMedicalProcedure
       procedureDate: createdMedicalProcedure.procedureDate,
       procedureValue: createdMedicalProcedure.procedureValue,
       paymentStatus: createdMedicalProcedure.paymentStatus,
+      denialReason: createdMedicalProcedure.denialReason,
     };
   }
 }
