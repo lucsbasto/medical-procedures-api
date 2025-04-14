@@ -132,7 +132,7 @@
           },
           "crm": {
             "type": "string",
-            "description": "Número do CRM do médico.",
+            "description": "Número do CRM do médico (ex: SP-12345). Caracteres especiais e espaços serão removidos antes da validação.",
             "example": "SP-12345",
             "minLength": 5,
             "maxLength": 20
