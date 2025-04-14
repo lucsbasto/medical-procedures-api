@@ -22,7 +22,7 @@ import {
 import { GetAllPatientsUseCase } from '@/domain/patient/use-cases/get-all-patients/get-all-patients.use-case';
 import { GetPatientByIdUseCase } from '@/domain/patient/use-cases/get-patient-by-id/get-patient-by-id.use-case';
 import { RegisterPatientUseCase } from '@/domain/patient/use-cases/register-patient/register-patient.use-case';
-import { UpdatePatientUseCase } from '@/domain/patient/use-cases/update-patient/update-patient.use-case'; // Importe o caso de uso de atualização
+import { UpdatePatientUseCase } from '@/domain/patient/use-cases/update-patient/update-patient.use-case';
 import {
   CreatePatientInputDto,
   CreatePatientResponseDto,
