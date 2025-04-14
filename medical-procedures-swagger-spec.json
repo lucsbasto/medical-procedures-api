@@ -101,6 +101,154 @@
           "Doctors"
         ]
       }
+    },
+    "/api/patients": {
+      "post": {
+        "operationId": "PatientsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePatientInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Paciente criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePatientResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de requisição inválidos."
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Patients"
+        ]
+      },
+      "get": {
+        "operationId": "PatientsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de todos os pacientes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllPatientResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Patients"
+        ]
+      }
+    },
+    "/api/patients/{id}": {
+      "get": {
+        "operationId": "PatientsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes de um paciente específico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetByIdPatientResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do paciente em formato inválido."
+          },
+          "404": {
+            "description": "Paciente não encontrado."
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Patients"
+        ]
+      },
+      "patch": {
+        "operationId": "PatientsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePatientInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paciente atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdatePatientResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de requisição inválidos."
+          },
+          "404": {
+            "description": "Paciente não encontrado."
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Patients"
+        ]
+      }
     }
   },
   "info": {
@@ -176,6 +324,180 @@
           "name",
           "crm",
           "specialty"
+        ]
+      },
+      "CreatePatientInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome completo do paciente.",
+            "example": "João da Silva",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do paciente.",
+            "example": "63999999999",
+            "minLength": 8,
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do paciente (opcional).",
+            "example": "joao.silva@email.com",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "name",
+          "phone"
+        ]
+      },
+      "CreatePatientResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do paciente.",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome completo do paciente.",
+            "example": "João da Silva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do paciente.",
+            "example": "63999999999"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do paciente (opcional).",
+            "example": "joao.silva@email.com"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone"
+        ]
+      },
+      "GetAllPatientResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do paciente.",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome completo do paciente.",
+            "example": "João da Silva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do paciente.",
+            "example": "63999999999"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do paciente (opcional).",
+            "example": "joao.silva@email.com"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone"
+        ]
+      },
+      "GetByIdPatientResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do paciente.",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome completo do paciente.",
+            "example": "João da Silva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do paciente.",
+            "example": "63999999999"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do paciente (opcional).",
+            "example": "joao.silva@email.com"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone"
+        ]
+      },
+      "UpdatePatientInputDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome completo do paciente (opcional).",
+            "example": "Maria Souza",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do paciente (opcional).",
+            "example": "63888888888",
+            "minLength": 8,
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do paciente (opcional).",
+            "example": "maria.souza@email.com",
+            "maxLength": 255
+          }
+        }
+      },
+      "UpdatePatientResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do paciente.",
+            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome completo do paciente.",
+            "example": "João da Silva"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do paciente.",
+            "example": "63999999999"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do paciente (opcional).",
+            "example": "joao.silva@email.com"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone"
         ]
       }
     }
