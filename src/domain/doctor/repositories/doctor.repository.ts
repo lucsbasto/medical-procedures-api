@@ -6,6 +6,6 @@ export interface DoctorRepository {
   findByName(name: string): Promise<Doctor[]>;
   findByCRM(crm: string): Promise<Doctor | null>;
   findAll(filters?: { [key: string]: any }): Promise<Doctor[]>;
-  update(doctor: Doctor): Promise<void>;
+  update(doctor: Doctor): Promise<Doctor | null>;
   delete(id: string): Promise<void>;
 }
