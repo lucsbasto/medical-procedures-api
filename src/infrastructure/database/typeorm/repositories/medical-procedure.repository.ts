@@ -3,6 +3,7 @@ import { MedicalProcedure } from '@/domain/medical-procedure/entities/medical-pr
 import { PaymentStatus } from '@/domain/medical-procedure/enums/payment-status.enum';
 import { MedicalProcedureRepository } from '@/domain/medical-procedure/repositories/medical-procedure.repository';
 import { GenerateFinancialReportByDoctorInputDto } from '@/domain/medical-procedure/usecases/dtos/generate-financial-report-by-doctor-input.dto';
+import { DoctorFinancialReportGrouped } from '@/domain/medical-procedure/usecases/interfaces/doctor-financial-report-grouped';
 import { buildReportFilters } from '@/domain/medical-procedure/utils/build-financial-report-filters';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -85,7 +86,7 @@ export class TypeOrmMedicalProcedureRepository implements MedicalProcedureReposi
     return response;
   }
 
-  async findGroupedByDoctor(filters: GenerateFinancialReportByDoctorInputDto): Promise<MedicalProcedure[]> {
+  async findGroupedByDoctor(filters: GenerateFinancialReportByDoctorInputDto): Promise<DoctorFinancialReportGrouped[]> {
     const qb = this.ormRepository.createQueryBuilder('procedure').leftJoin('procedure.doctor', 'doctor');
 
     if (filters.startDate && filters.endDate) {
