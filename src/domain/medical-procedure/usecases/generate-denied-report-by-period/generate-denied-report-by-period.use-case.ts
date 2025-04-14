@@ -1,4 +1,3 @@
-import { DoctorRepository } from '@/domain/doctor/repositories/doctor.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { PaymentStatus } from '../../enums/payment-status.enum';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
@@ -14,8 +13,6 @@ export class GenerateDeniedReportByPeriodUseCase implements GenerateDeniedReport
   constructor(
     @Inject('MedicalProcedureRepository')
     private readonly medicalProcedureRepository: MedicalProcedureRepository,
-    @Inject('DoctorRepository')
-    private readonly doctorRepository: DoctorRepository,
   ) {}
 
   async execute(input: GenerateDeniedReportByPeriodInputDto): Promise<GenerateDeniedReportByPeriodOutputDto> {
@@ -42,16 +39,10 @@ export class GenerateDeniedReportByPeriodUseCase implements GenerateDeniedReport
     const report: GenerateDeniedReportByPeriodOutputDto = [];
 
     for (const procedure of deniedProcedures) {
-      let doctorName: string | undefined;
-      const doctor = await this.doctorRepository.findById(procedure.doctorId);
-      if (doctor) {
-        doctorName = doctor.name;
-      }
-
       const deniedProcedure: DeniedProcedure = {
         id: procedure.id,
         doctorId: procedure.doctorId,
-        doctorName,
+        doctorName: procedure.doctor.name,
         patientId: procedure.patientId,
         procedureName: procedure.procedureName,
         procedureDate: procedure.procedureDate,

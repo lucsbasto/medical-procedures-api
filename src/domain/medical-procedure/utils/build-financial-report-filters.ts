@@ -1,11 +1,10 @@
 import { Between } from 'typeorm';
-import { GenerateFinancialReportByDoctorInputDto } from '../usecases/dtos/generate-financial-report-by-doctor-input.dto';
 
-export function buildFinancialReportFilters(input: GenerateFinancialReportByDoctorInputDto): any {
+export function buildReportFilters(input: any): any {
   if (!input) {
     return {};
   }
-  const { startDate, endDate, doctorId } = input;
+  const { startDate, endDate, doctorId, paymentStatus } = input;
 
   const filters: any = {};
 
@@ -15,6 +14,10 @@ export function buildFinancialReportFilters(input: GenerateFinancialReportByDoct
 
   if (doctorId) {
     filters.doctorId = doctorId;
+  }
+
+  if (paymentStatus) {
+    filters.paymentStatus = paymentStatus;
   }
 
   return filters;

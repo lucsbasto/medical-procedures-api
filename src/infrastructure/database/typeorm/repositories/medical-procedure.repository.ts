@@ -3,7 +3,7 @@ import { MedicalProcedure } from '@/domain/medical-procedure/entities/medical-pr
 import { PaymentStatus } from '@/domain/medical-procedure/enums/payment-status.enum';
 import { MedicalProcedureRepository } from '@/domain/medical-procedure/repositories/medical-procedure.repository';
 import { GenerateFinancialReportByDoctorInputDto } from '@/domain/medical-procedure/usecases/dtos/generate-financial-report-by-doctor-input.dto';
-import { buildFinancialReportFilters } from '@/domain/medical-procedure/utils/build-financial-report-filters';
+import { buildReportFilters } from '@/domain/medical-procedure/utils/build-financial-report-filters';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -58,7 +58,7 @@ export class TypeOrmMedicalProcedureRepository implements MedicalProcedureReposi
   }
 
   async findAll(input?: any): Promise<MedicalProcedure[]> {
-    const filters = buildFinancialReportFilters(input);
+    const filters = buildReportFilters(input);
 
     const medicalProcedureEntities = await this.ormRepository.find({ where: filters, relations: ['doctor'] });
     const response = medicalProcedureEntities.map((entity) => {
@@ -70,7 +70,6 @@ export class TypeOrmMedicalProcedureRepository implements MedicalProcedureReposi
         entity.doctor.contact.phone,
         entity.doctor.contact.email,
       );
-      console.log('entity.doctor', doctor);
       return new MedicalProcedure(
         entity.id,
         entity.doctorId,
