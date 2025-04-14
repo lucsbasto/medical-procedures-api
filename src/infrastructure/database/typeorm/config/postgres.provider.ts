@@ -1,22 +1,23 @@
 import * as dotenv from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { DoctorEntity } from '../entities/doctor.entity';
+import { MedicalProcedureEntity } from '../entities/medical-procedure.entity';
 import { PatientEntity } from '../entities/patient.entity';
 
 dotenv.config();
 
 export const dataSourcePostgres: DataSourceOptions = {
-  type: process.env.DATABASE_TYPE,
+  type: 'postgres',
   host: process.env.DATABASE_HOST,
-  port: process.env.DATABASE_PORT,
+  port: Number(process.env.DATABASE_PORT),
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: false,
-  entities: [DoctorEntity, PatientEntity],
-  migrations: ['dist/src/infrastructure/database/migrations/*{.ts,.js}'],
-  seeds: ['dist/src/infrastructure/database/seeds/*{.ts,.js}'],
-  synchronize: true,
-} as DataSourceOptions;
+  entities: [DoctorEntity, PatientEntity, MedicalProcedureEntity],
+  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+  synchronize: false,
+};
+const dataSourceMigrations = new DataSource(dataSourcePostgres);
 
-export const dataSourceMigrations = new DataSource({ ...dataSourcePostgres });
+export default dataSourceMigrations;
