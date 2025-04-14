@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 
 export class CreateDoctorDto {
   @ApiProperty({
@@ -41,4 +41,27 @@ export class CreateDoctorDto {
   @IsString({ message: 'A especialidade do médico deve ser uma string.' })
   @Length(3, 100, { message: 'A especialidade do médico deve ter entre 3 e 100 caracteres.' })
   specialty: string;
+
+  @ApiProperty({
+    description: 'Número de telefone do doutor.',
+    example: '63999999999',
+    minLength: 8,
+    maxLength: 20,
+  })
+  @IsOptional()
+  @Transform(({ value }) => (typeof value === 'string' ? value.replace(/[^0-9]/g, '') : value))
+  @IsString({ message: 'O telefone do doutor deve ser uma string.' })
+  @Length(8, 20, { message: 'O telefone do doutor deve ter entre 8 e 20 caracteres.' })
+  phone?: string;
+
+  @ApiProperty({
+    description: 'Email do doutor (opcional).',
+    example: 'joao.silva@email.com',
+    maxLength: 255,
+    required: false,
+  })
+  @IsOptional()
+  @IsEmail({}, { message: 'O email do doutor deve ser um endereço de email válido.' })
+  @Length(0, 255, { message: 'O email do doutor deve ter no máximo 255 caracteres.' })
+  email?: string;
 }

@@ -1,3 +1,4 @@
+import { Contact } from '@/domain/patient/value-objects/contact.value-objects';
 import { CRM } from '../value-objects/crm.value-object';
 import { Specialty } from '../value-objects/specialty.value-object';
 
@@ -6,16 +7,14 @@ export class Doctor {
   private _name: string;
   private _crm: CRM;
   private _specialty: Specialty;
-  private _phone?: string;
-  private _email?: string;
+  private _contact: Contact;
 
   constructor(id: string, name: string, crmValue: string, specialtyValue: string, phone?: string, email?: string) {
     this._id = id;
     this._name = name;
     this._crm = CRM.create(crmValue);
     this._specialty = Specialty.create(specialtyValue);
-    this._phone = phone;
-    this._email = email;
+    this._contact = Contact.create(phone, email);
   }
 
   get id(): string {
@@ -34,11 +33,11 @@ export class Doctor {
     return this._specialty.value;
   }
 
-  get phone(): string | undefined {
-    return this._phone;
+  get phone(): string {
+    return this._contact?.phone;
   }
 
   get email(): string | undefined {
-    return this._email;
+    return this._contact?.email;
   }
 }

@@ -27,7 +27,16 @@ export class TypeOrmDoctorRepository implements DoctorRepository {
   }
 
   async create(doctor: Doctor): Promise<Doctor> {
-    const doctorOrm = this.repository.create(doctor);
+    const doctorOrm = this.repository.create({
+      id: doctor.id,
+      name: doctor.name,
+      crm: doctor.crm,
+      specialty: doctor.specialty,
+      contact: {
+        phone: doctor.phone,
+        email: doctor.email,
+      },
+    });
     const savedDoctor = await this.repository.save(doctorOrm);
     return new Doctor(savedDoctor.id, savedDoctor.name, savedDoctor.crm, savedDoctor.specialty);
   }

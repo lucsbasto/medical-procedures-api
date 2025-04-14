@@ -18,16 +18,19 @@ export class Contact extends ValueObject<ContactProps> {
     super(props);
   }
 
-  public static create(_phone: string, _email?: string): Contact {
-    const phone = _phone.replace(/\s/g, '');
+  public static create(_phone?: string, _email?: string): Contact {
+    const phone = _phone?.replace(/\s/g, '');
     const email = _email?.replace(/\s/g, '');
+    if (!phone || !email) {
+      return;
+    }
     Contact.validate(phone, email);
     return new Contact({ phone, email });
   }
 
   private static validate(phone: string, email?: string): void {
-    if (!phone || phone === '') {
-      throw new Error('Patient contact phone cannot be empty.');
+    if (phone || phone.length < 9) {
+      throw new Error('Invalid phone number.');
     }
     if (email && email !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       throw new Error('Invalid email format.');
