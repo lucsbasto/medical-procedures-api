@@ -3,8 +3,8 @@ import { DoctorRepository } from '@/domain/doctor/repositories/doctor.repository
 import { MedicalProcedure } from '@/domain/medical-procedure/entities/medical-procedure.entity';
 import { PaymentStatus } from '@/domain/medical-procedure/enums/payment-status.enum';
 import { MedicalProcedureRepository } from '@/domain/medical-procedure/repositories/medical-procedure.repository';
-import { GenerateGlossesReportByPeriodInputDto } from '../../dtos/generate-glosses-report-by-period-input.dto';
-import { GenerateGlossesReportByPeriodUseCase } from '../generate-glosses-report-by-period.use-case';
+import { GenerateDeniedReportByPeriodInputDto } from '../../dtos/generate-denied-report-by-period-input.dto';
+import { GenerateDeniedReportByPeriodUseCase } from '../generate-denied-report-by-period.use-case';
 
 const mockMedicalProcedureRepository: jest.Mocked<MedicalProcedureRepository> = {
   create: jest.fn(),
@@ -22,8 +22,8 @@ const mockDoctorRepository: jest.Mocked<DoctorRepository> = {
   delete: jest.fn(),
 } as any;
 
-describe('GenerateGlossesReportByPeriodUseCase', () => {
-  let generateGlossesReportByPeriodUseCase: GenerateGlossesReportByPeriodUseCase;
+describe('GenerateDeniedReportByPeriodUseCase', () => {
+  let generateDeniedReportByPeriodUseCase: GenerateDeniedReportByPeriodUseCase;
   const startDate = new Date('2025-04-01T00:00:00-03:00');
   const endDate = new Date('2025-04-30T23:59:59-03:00');
   const midDate = new Date('2025-04-15T12:00:00-03:00');
@@ -64,7 +64,7 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
   const doctor3 = new Doctor('doctor-3', 'Dr. Pedro', 'MG-123456', 'Pediatra');
 
   beforeEach(() => {
-    generateGlossesReportByPeriodUseCase = new GenerateGlossesReportByPeriodUseCase(
+    generateDeniedReportByPeriodUseCase = new GenerateDeniedReportByPeriodUseCase(
       mockMedicalProcedureRepository,
       mockDoctorRepository,
     );
@@ -78,10 +78,10 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
   });
 
   it('should generate a report of glossed procedures within the specified period', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate, endDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate };
     mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1, procedure2]);
 
-    const result = await generateGlossesReportByPeriodUseCase.execute(input);
+    const result = await generateDeniedReportByPeriodUseCase.execute(input);
 
     expect(mockMedicalProcedureRepository.findAll).toHaveBeenCalledWith({
       procedureDate: { gte: startDate, lte: endDate },
@@ -113,17 +113,17 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
   });
 
   it('should return an empty array if no procedures are glossed within the period', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate, endDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate };
     mockMedicalProcedureRepository.findAll.mockResolvedValue([]);
 
-    const result = await generateGlossesReportByPeriodUseCase.execute(input);
+    const result = await generateDeniedReportByPeriodUseCase.execute(input);
 
     expect(result).toHaveLength(0);
     expect(result).toEqual([]);
   });
 
   it('should only include procedures within the specified date range', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate, endDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate };
     mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1, procedure2, procedure3]);
 
     const expectedProcedure1 = {
@@ -158,17 +158,17 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
       procedureValue: 50,
       denialReason: 'Fora do período',
     };
-    const result = await generateGlossesReportByPeriodUseCase.execute(input);
+    const result = await generateDeniedReportByPeriodUseCase.execute(input);
 
     expect(result).toHaveLength(3);
     expect(result).toEqual([expectedProcedure1, expectedProcedure2, expectedProcedure3]);
   });
 
   it('should handle doctors not found in the DoctorRepository', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate, endDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate };
     mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1]);
 
-    const result = await generateGlossesReportByPeriodUseCase.execute(input);
+    const result = await generateDeniedReportByPeriodUseCase.execute(input);
 
     expect(result).toHaveLength(1);
 
@@ -187,29 +187,29 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
   });
 
   it('should throw an error if startDate is not provided', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate: undefined as any, endDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate: undefined as any, endDate };
 
-    await expect(generateGlossesReportByPeriodUseCase.execute(input)).rejects.toThrow(
-      'Start date and end date must be provided for the glosses report.',
+    await expect(generateDeniedReportByPeriodUseCase.execute(input)).rejects.toThrow(
+      'Start date and end date must be provided for the Denied report.',
     );
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
   });
 
   it('should throw an error if endDate is not provided', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate, endDate: undefined as any };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate: undefined as any };
 
-    await expect(generateGlossesReportByPeriodUseCase.execute(input)).rejects.toThrow(
-      'Start date and end date must be provided for the glosses report.',
+    await expect(generateDeniedReportByPeriodUseCase.execute(input)).rejects.toThrow(
+      'Start date and end date must be provided for the Denied report.',
     );
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
   });
 
   it('should throw an error if startDate is after endDate', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate: endDate, endDate: startDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate: endDate, endDate: startDate };
 
-    await expect(generateGlossesReportByPeriodUseCase.execute(input)).rejects.toThrow(
+    await expect(generateDeniedReportByPeriodUseCase.execute(input)).rejects.toThrow(
       'Start date cannot be after the end date.',
     );
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
@@ -217,7 +217,7 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
   });
 
   it('should include glossed procedures from multiple doctors within the period with details', async () => {
-    const input: GenerateGlossesReportByPeriodInputDto = { startDate, endDate };
+    const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate };
     const procedure5_in_period = new MedicalProcedure(
       '5',
       'doctor-3',
@@ -230,7 +230,7 @@ describe('GenerateGlossesReportByPeriodUseCase', () => {
     );
     mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1, procedure2, procedure5_in_period]);
 
-    const result = await generateGlossesReportByPeriodUseCase.execute(input);
+    const result = await generateDeniedReportByPeriodUseCase.execute(input);
 
     expect(result).toHaveLength(3);
     expect(result).toEqual([

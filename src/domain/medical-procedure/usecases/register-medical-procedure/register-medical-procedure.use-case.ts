@@ -13,7 +13,7 @@ export class RegisterMedicalProcedureUseCase implements RegisterMedicalProcedure
   ) {}
 
   async execute(input: RegisterMedicalProcedureInputDto): Promise<MedicalProcedureOutputDto> {
-    const { doctorId, patientId, procedureDate, procedureValue, paymentStatus, procedureName } = input;
+    const { doctorId, patientId, procedureDate, procedureValue, paymentStatus, procedureName, denialReason } = input;
 
     if (!doctorId || doctorId.trim() === '') {
       throw new Error('Doctor ID cannot be empty.');
@@ -43,6 +43,7 @@ export class RegisterMedicalProcedureUseCase implements RegisterMedicalProcedure
       procedureDate,
       procedureValue,
       paymentStatus,
+      denialReason,
     );
 
     const createdMedicalProcedure = await this.medicalProcedureRepository.create(medicalProcedure);

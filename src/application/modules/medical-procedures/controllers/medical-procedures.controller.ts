@@ -52,7 +52,12 @@ export class MedicalProceduresController {
   async register(
     @Body() createMedicalProcedureInputDto: CreateMedicalProcedureInputDto,
   ): Promise<CreateMedicalProcedureResponseDto> {
-    return this.registerMedicalProcedureUseCase.execute(createMedicalProcedureInputDto);
+    try {
+      return this.registerMedicalProcedureUseCase.execute(createMedicalProcedureInputDto);
+    } catch (error) {
+      console.log(error);
+      throw new Error('Failed to register medical procedure');
+    }
   }
 
   @Get(':id')
@@ -71,7 +76,12 @@ export class MedicalProceduresController {
   @Get()
   @ApiOkResponse({ type: [GetAllMedicalProceduresResponseDto], description: 'List of all medical procedures.' })
   async findAll(): Promise<GetAllMedicalProceduresResponseDto> {
-    return this.getAllMedicalProceduresUseCase.execute();
+    try {
+      return this.getAllMedicalProceduresUseCase.execute();
+    } catch (error) {
+      console.log(error);
+      throw new Error('Failed to get medical procedures');
+    }
   }
 
   @Put(':id')

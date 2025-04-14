@@ -1,4 +1,4 @@
-export interface GlossedProcedure {
+export interface DeniedProcedure {
   id: string;
   doctorId: string;
   doctorName: string;
@@ -9,4 +9,4 @@ export interface GlossedProcedure {
   denialReason: string | null;
 }
 
-export type GenerateGlossesReportByPeriodOutputDto = GlossedProcedure[];
+export type GenerateDeniedReportByPeriodOutputDto = DeniedProcedure[];

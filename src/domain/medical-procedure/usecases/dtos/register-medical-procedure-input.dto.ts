@@ -7,4 +7,5 @@ export interface RegisterMedicalProcedureInputDto {
   procedureValue: number;
   paymentStatus: PaymentStatus;
   procedureName: string;
+  denialReason?: string;
 }

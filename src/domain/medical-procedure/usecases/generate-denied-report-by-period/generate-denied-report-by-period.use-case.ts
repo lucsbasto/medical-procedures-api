@@ -1,22 +1,24 @@
 import { DoctorRepository } from '@/domain/doctor/repositories/doctor.repository';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PaymentStatus } from '../../enums/payment-status.enum';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
-import { GenerateGlossesReportByPeriodInputDto } from '../dtos/generate-glosses-report-by-period-input.dto';
+import { GenerateDeniedReportByPeriodInputDto } from '../dtos/generate-denied-report-by-period-input.dto';
 import {
-  GenerateGlossesReportByPeriodOutputDto,
-  GlossedProcedure,
-} from '../dtos/generate-glosses-report-by-period-output.dto';
-import { GenerateGlossesReportByPeriodUseCaseInterface } from './generate-glosses-report-by-period.use-case.interface';
+  DeniedProcedure,
+  GenerateDeniedReportByPeriodOutputDto,
+} from '../dtos/generate-denied-report-by-period-output.dto';
+import { GenerateDeniedReportByPeriodUseCaseInterface } from './generate-denied-report-by-period.use-case.interface';
 
 @Injectable()
-export class GenerateGlossesReportByPeriodUseCase implements GenerateGlossesReportByPeriodUseCaseInterface {
+export class GenerateDeniedReportByPeriodUseCase implements GenerateDeniedReportByPeriodUseCaseInterface {
   constructor(
+    @Inject('MedicalProcedureRepository')
     private readonly medicalProcedureRepository: MedicalProcedureRepository,
+    @Inject('DoctorRepository')
     private readonly doctorRepository: DoctorRepository,
   ) {}
 
-  async execute(input: GenerateGlossesReportByPeriodInputDto): Promise<GenerateGlossesReportByPeriodOutputDto> {
+  async execute(input: GenerateDeniedReportByPeriodInputDto): Promise<GenerateDeniedReportByPeriodOutputDto> {
     const { startDate, endDate } = input;
 
     if (!startDate || !endDate) {
@@ -35,18 +37,18 @@ export class GenerateGlossesReportByPeriodUseCase implements GenerateGlossesRepo
       paymentStatus: PaymentStatus.DENIED,
     };
 
-    const glossedProcedures = await this.medicalProcedureRepository.findAll(filters);
+    const deniedProcedures = await this.medicalProcedureRepository.findAll(filters);
 
-    const report: GenerateGlossesReportByPeriodOutputDto = [];
+    const report: GenerateDeniedReportByPeriodOutputDto = [];
 
-    for (const procedure of glossedProcedures) {
+    for (const procedure of deniedProcedures) {
       let doctorName: string | undefined;
       const doctor = await this.doctorRepository.findById(procedure.doctorId);
       if (doctor) {
         doctorName = doctor.name;
       }
 
-      const glossedProcedure: GlossedProcedure = {
+      const deniedProcedure: DeniedProcedure = {
         id: procedure.id,
         doctorId: procedure.doctorId,
         doctorName,
@@ -56,7 +58,7 @@ export class GenerateGlossesReportByPeriodUseCase implements GenerateGlossesRepo
         procedureValue: procedure.procedureValue,
         denialReason: procedure.denialReason,
       };
-      report.push(glossedProcedure);
+      report.push(deniedProcedure);
     }
 
     return report;

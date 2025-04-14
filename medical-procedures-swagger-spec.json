@@ -415,6 +415,119 @@
           "Medical Procedures"
         ]
       }
+    },
+    "/api/reports/financial": {
+      "get": {
+        "operationId": "FinancialReportController_getFinancialReport",
+        "parameters": [
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "description": "Data de início do relatório.",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "description": "Data de fim do relatório.",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "doctorId",
+            "required": false,
+            "in": "query",
+            "description": "ID do médico para filtrar o relatório (opcional).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relatório financeiro por médico gerado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenerateFinancialReportByDoctorOutputDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de requisição inválidos."
+          },
+          "500": {
+            "description": "Erro interno do servidor ao gerar o relatório."
+          }
+        },
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/api/reports/denied": {
+      "get": {
+        "operationId": "DeniedReportController_getDeniedReport",
+        "parameters": [
+          {
+            "name": "startDate",
+            "required": true,
+            "in": "query",
+            "description": "Data de início do relatório.",
+            "schema": {
+              "format": "date-time",
+              "example": "2025-04-01T00:00:00.000Z",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": true,
+            "in": "query",
+            "description": "Data de fim do relatório.",
+            "schema": {
+              "format": "date-time",
+              "example": "2025-04-14T23:59:59.999Z",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relatório de procedimentos negados por período gerado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenerateDeniedReportByPeriodOutputDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de requisição inválidos."
+          },
+          "500": {
+            "description": "Erro interno do servidor ao gerar o relatório."
+          }
+        },
+        "tags": [
+          "Reports"
+        ]
+      }
     }
   },
   "info": {
@@ -930,6 +1043,86 @@
           "procedureDate",
           "procedureValue",
           "paymentStatus",
+          "denialReason"
+        ]
+      },
+      "GenerateFinancialReportByDoctorOutputDto": {
+        "type": "object",
+        "properties": {
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico."
+          },
+          "doctorName": {
+            "type": "string",
+            "description": "Nome do médico (opcional)."
+          },
+          "totalPaid": {
+            "type": "number",
+            "description": "Valor total dos procedimentos pagos."
+          },
+          "totalPending": {
+            "type": "number",
+            "description": "Valor total dos procedimentos pendentes."
+          },
+          "totalDenied": {
+            "type": "number",
+            "description": "Valor total dos procedimentos negados."
+          }
+        },
+        "required": [
+          "doctorId",
+          "totalPaid",
+          "totalPending",
+          "totalDenied"
+        ]
+      },
+      "GenerateDeniedReportByPeriodOutputDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do procedimento negado."
+          },
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico responsável."
+          },
+          "doctorName": {
+            "type": "string",
+            "description": "Nome do médico responsável."
+          },
+          "patientId": {
+            "type": "string",
+            "description": "ID do paciente."
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "Nome do procedimento."
+          },
+          "procedureDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data do procedimento."
+          },
+          "procedureValue": {
+            "type": "number",
+            "description": "Valor do procedimento."
+          },
+          "denialReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Motivo da glossa."
+          }
+        },
+        "required": [
+          "id",
+          "doctorId",
+          "doctorName",
+          "patientId",
+          "procedureName",
+          "procedureDate",
+          "procedureValue",
           "denialReason"
         ]
       }

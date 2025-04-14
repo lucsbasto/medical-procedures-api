@@ -1,3 +1,4 @@
+import { Doctor } from '@/domain/doctor/entities/doctor.entity';
 import { PaymentStatus } from '../enums/payment-status.enum';
 
 export class MedicalProcedure {
@@ -9,7 +10,7 @@ export class MedicalProcedure {
   private _paymentStatus: PaymentStatus;
   private _procedureName: string;
   private _denialReason: string | null;
-
+  private _doctor: Doctor | null;
   constructor(
     id: string,
     doctorId: string,
@@ -19,6 +20,7 @@ export class MedicalProcedure {
     procedureValue: number,
     paymentStatus: PaymentStatus,
     denialReason: string | null = null,
+    doctor: Doctor | null = null,
   ) {
     this._id = id;
     this._doctorId = doctorId;
@@ -28,6 +30,7 @@ export class MedicalProcedure {
     this._paymentStatus = paymentStatus;
     this._procedureName = procedureName;
     this._denialReason = denialReason;
+    this._doctor = doctor;
     this.validatePaymentStatus();
     this.validateProcedureName();
     this.validateProcedureValue();
@@ -64,6 +67,10 @@ export class MedicalProcedure {
 
   get denialReason(): string | null {
     return this._denialReason;
+  }
+
+  get doctor(): Doctor | null {
+    return this._doctor;
   }
 
   private validatePaymentStatus(): void {
