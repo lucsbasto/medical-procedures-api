@@ -55,6 +55,7 @@ describe('RegisterMedicalProcedureUseCase', () => {
       procedureDate: input.procedureDate,
       procedureValue: input.procedureValue,
       paymentStatus: input.paymentStatus,
+      denialReason: null,
     });
   });
 

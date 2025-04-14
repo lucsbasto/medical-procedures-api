@@ -63,6 +63,7 @@ describe('UpdateMedicalProcedureUseCase', () => {
       procedureDate: new Date('2025-04-11T10:00:00-03:00'),
       procedureValue: 200.0,
       paymentStatus: PaymentStatus.PAID,
+      denialReason: null,
     });
   });
 
@@ -99,6 +100,7 @@ describe('UpdateMedicalProcedureUseCase', () => {
       new Date('2025-04-11T10:00:00-03:00'),
       150.0,
       PaymentStatus.PAID,
+      null,
     );
     mockMedicalProcedureRepository.update.mockResolvedValue(undefined);
     mockMedicalProcedureRepository.findById.mockResolvedValue(updatedProcedure);
@@ -115,6 +117,7 @@ describe('UpdateMedicalProcedureUseCase', () => {
       procedureDate: new Date('2025-04-11T10:00:00-03:00'),
       procedureValue: 150.0,
       paymentStatus: PaymentStatus.PAID,
+      denialReason: null,
     });
   });
 });
