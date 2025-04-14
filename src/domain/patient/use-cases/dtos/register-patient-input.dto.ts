@@ -1,5 +1,5 @@
 export interface RegisterPatientInputDto {
   name: string;
-  phone: string;
+  phone?: string;
   email?: string;
 }

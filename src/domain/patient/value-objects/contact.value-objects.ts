@@ -1,7 +1,7 @@
 import { ValueObject } from '@/common/domain/value-object/value-object';
 
 interface ContactProps {
-  phone: string;
+  phone?: string;
   email?: string;
 }
 
@@ -21,15 +21,12 @@ export class Contact extends ValueObject<ContactProps> {
   public static create(_phone?: string, _email?: string): Contact {
     const phone = _phone?.replace(/\s/g, '');
     const email = _email?.replace(/\s/g, '');
-    if (!phone || !email) {
-      return;
-    }
     Contact.validate(phone, email);
     return new Contact({ phone, email });
   }
 
   private static validate(phone: string, email?: string): void {
-    if (phone || phone.length < 9) {
+    if (phone && phone.length < 9) {
       throw new Error('Invalid phone number.');
     }
     if (email && email !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {

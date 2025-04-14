@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { setupGlobalPipes } from './common/handlers/global-pipes.handler';
 import { setupSwagger } from './common/handlers/swagger.handler';
 import { LoggerService } from './common/logger/logger.service';
 import { MainModule } from './main.module';
@@ -8,7 +9,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(MainModule, { logger: appLogger });
   const port = process.env.HTTP_PORT || 3000;
-
+  setupGlobalPipes(app);
   const logger = await app.resolve(LoggerService);
 
   app.setGlobalPrefix('api');

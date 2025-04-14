@@ -20,11 +20,11 @@ export class CreatePatientInputDto {
     minLength: 8,
     maxLength: 20,
   })
-  @Transform(({ value }) => (typeof value === 'string' ? value.replace(/[^0-9]/g, '') : value))
-  @IsNotEmpty({ message: 'O telefone do paciente é obrigatório.' })
+  @IsOptional()
+  @Transform(({ value }) => value.replace(/[^0-9]/g, ''))
   @IsString({ message: 'O telefone do paciente deve ser uma string.' })
   @Length(8, 20, { message: 'O telefone do paciente deve ter entre 8 e 20 caracteres.' })
-  phone: string;
+  phone?: string;
 
   @ApiProperty({
     description: 'Email do paciente (opcional).',

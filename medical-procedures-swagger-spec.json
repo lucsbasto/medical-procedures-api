@@ -291,12 +291,26 @@
             "example": "Cardiologia",
             "minLength": 3,
             "maxLength": 100
+          },
+          "phone": {
+            "type": "string",
+            "description": "Número de telefone do doutor.",
+            "example": "63999999999",
+            "minLength": 8,
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do doutor (opcional).",
+            "example": "joao.silva@email.com",
+            "maxLength": 255
           }
         },
         "required": [
           "name",
           "crm",
-          "specialty"
+          "specialty",
+          "phone"
         ]
       },
       "DoctorResponseDto": {

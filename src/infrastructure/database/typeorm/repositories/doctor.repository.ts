@@ -11,6 +11,7 @@ export class TypeOrmDoctorRepository implements DoctorRepository {
     @InjectRepository(DoctorEntity)
     private readonly repository: Repository<DoctorEntity>,
   ) {}
+
   async findByName(name: string): Promise<Doctor[]> {
     const doctors = await this.repository.find({ where: { name } });
     if (!doctors.length) {
@@ -18,6 +19,7 @@ export class TypeOrmDoctorRepository implements DoctorRepository {
     }
     return doctors.map((doctor) => new Doctor(doctor.id, doctor.name, doctor.crm, doctor.specialty));
   }
+
   async findByCRM(crm: string): Promise<Doctor | null> {
     const doctorOrm = await this.repository.findOne({ where: { crm } });
     if (!doctorOrm) {
@@ -51,7 +53,17 @@ export class TypeOrmDoctorRepository implements DoctorRepository {
 
   async findAll(): Promise<Doctor[]> {
     const doctorsOrm = await this.repository.find();
-    return doctorsOrm.map((doctorOrm) => new Doctor(doctorOrm.id, doctorOrm.name, doctorOrm.crm, doctorOrm.specialty));
+    return doctorsOrm.map(
+      (doctorOrm) =>
+        new Doctor(
+          doctorOrm.id,
+          doctorOrm.name,
+          doctorOrm.crm,
+          doctorOrm.specialty,
+          doctorOrm.contact?.phone,
+          doctorOrm.contact?.email,
+        ),
+    );
   }
 
   async update(doctor: Doctor): Promise<Doctor | null> {

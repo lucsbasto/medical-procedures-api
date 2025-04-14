@@ -19,10 +19,6 @@ export class RegisterPatientUseCase implements RegisterPatientUseCaseInterface {
       throw new Error('Patient name cannot be empty.');
     }
 
-    if (!phone || phone.trim() === '') {
-      throw new Error('Patient phone number is required.');
-    }
-
     const patient = new Patient(undefined, name, phone, email);
 
     const createdPatient = await this.patientRepository.create(patient);
