@@ -5,7 +5,7 @@ import { DoctorEntity } from '@/infrastructure/database/typeorm/entities/doctor.
 import { TypeOrmDoctorRepository } from '@/infrastructure/database/typeorm/repositories/typeorm-doctor.repository';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DoctorsController } from './doctors.controller';
+import { DoctorsController } from './controllers/doctors.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DoctorEntity])],
