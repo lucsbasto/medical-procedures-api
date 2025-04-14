@@ -249,6 +249,172 @@
           "Patients"
         ]
       }
+    },
+    "/api/medical-procedures": {
+      "post": {
+        "operationId": "MedicalProceduresController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMedicalProcedureInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Medical procedure registered successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateMedicalProcedureResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data."
+          }
+        },
+        "tags": [
+          "Medical Procedures"
+        ]
+      },
+      "get": {
+        "operationId": "MedicalProceduresController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all medical procedures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllMedicalProceduresResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Medical Procedures"
+        ]
+      }
+    },
+    "/api/medical-procedures/{id}": {
+      "get": {
+        "operationId": "MedicalProceduresController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medical procedure found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMedicalProcedureByIdResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID format."
+          },
+          "404": {
+            "description": "Medical procedure not found."
+          }
+        },
+        "tags": [
+          "Medical Procedures"
+        ]
+      },
+      "put": {
+        "operationId": "MedicalProceduresController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMedicalProcedureInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medical procedure updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateMedicalProcedureResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data or ID format."
+          },
+          "404": {
+            "description": "Medical procedure not found."
+          }
+        },
+        "tags": [
+          "Medical Procedures"
+        ]
+      },
+      "delete": {
+        "operationId": "MedicalProceduresController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medical procedure deleted successfully."
+          },
+          "400": {
+            "description": "Invalid ID format."
+          },
+          "404": {
+            "description": "Medical procedure not found."
+          }
+        },
+        "tags": [
+          "Medical Procedures"
+        ]
+      }
     }
   },
   "info": {
@@ -512,6 +678,259 @@
           "id",
           "name",
           "phone"
+        ]
+      },
+      "CreateMedicalProcedureInputDto": {
+        "type": "object",
+        "properties": {
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico responsável pelo procedimento."
+          },
+          "patientId": {
+            "type": "string",
+            "description": "ID do paciente que realizou o procedimento."
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "Nome do procedimento médico."
+          },
+          "procedureDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data e hora do procedimento."
+          },
+          "procedureValue": {
+            "type": "number",
+            "description": "Valor do procedimento."
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": [
+              "PAID",
+              "PENDING",
+              "DENIED"
+            ],
+            "description": "Status do pagamento."
+          },
+          "denialReason": {
+            "type": "string",
+            "description": "Motivo da recusa do pagamento (opcional)."
+          }
+        },
+        "required": [
+          "doctorId",
+          "patientId",
+          "procedureName",
+          "procedureDate",
+          "procedureValue",
+          "paymentStatus"
+        ]
+      },
+      "CreateMedicalProcedureResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do procedimento médico."
+          },
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico responsável pelo procedimento."
+          },
+          "patientId": {
+            "type": "string",
+            "description": "ID do paciente que realizou o procedimento."
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "Nome do procedimento médico."
+          },
+          "procedureDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data e hora do procedimento."
+          },
+          "procedureValue": {
+            "type": "number",
+            "description": "Valor do procedimento."
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": [
+              "PAID",
+              "PENDING",
+              "DENIED"
+            ],
+            "description": "Status do pagamento."
+          },
+          "denialReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Motivo da recusa do pagamento (opcional)."
+          }
+        },
+        "required": [
+          "id",
+          "doctorId",
+          "patientId",
+          "procedureName",
+          "procedureDate",
+          "procedureValue",
+          "paymentStatus",
+          "denialReason"
+        ]
+      },
+      "GetMedicalProcedureByIdResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do procedimento médico."
+          },
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico responsável pelo procedimento."
+          },
+          "patientId": {
+            "type": "string",
+            "description": "ID do paciente que realizou o procedimento."
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "Nome do procedimento médico."
+          },
+          "procedureDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data e hora do procedimento."
+          },
+          "procedureValue": {
+            "type": "number",
+            "description": "Valor do procedimento."
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": [
+              "PAID",
+              "PENDING",
+              "DENIED"
+            ],
+            "description": "Status do pagamento."
+          },
+          "denialReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Motivo da recusa do pagamento (opcional)."
+          }
+        },
+        "required": [
+          "id",
+          "doctorId",
+          "patientId",
+          "procedureName",
+          "procedureDate",
+          "procedureValue",
+          "paymentStatus",
+          "denialReason"
+        ]
+      },
+      "GetAllMedicalProceduresResponseDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateMedicalProcedureInputDto": {
+        "type": "object",
+        "properties": {
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico responsável pelo procedimento."
+          },
+          "patientId": {
+            "type": "string",
+            "description": "ID do paciente que realizou o procedimento."
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "Nome do procedimento médico."
+          },
+          "procedureDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data e hora do procedimento."
+          },
+          "procedureValue": {
+            "type": "number",
+            "description": "Valor do procedimento."
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": [
+              "PAID",
+              "PENDING",
+              "DENIED"
+            ],
+            "description": "Status do pagamento."
+          },
+          "denialReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Motivo da recusa do pagamento (opcional)."
+          }
+        }
+      },
+      "UpdateMedicalProcedureResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do procedimento médico."
+          },
+          "doctorId": {
+            "type": "string",
+            "description": "ID do médico responsável pelo procedimento."
+          },
+          "patientId": {
+            "type": "string",
+            "description": "ID do paciente que realizou o procedimento."
+          },
+          "procedureName": {
+            "type": "string",
+            "description": "Nome do procedimento médico."
+          },
+          "procedureDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data e hora do procedimento."
+          },
+          "procedureValue": {
+            "type": "number",
+            "description": "Valor do procedimento."
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": [
+              "PAID",
+              "PENDING",
+              "DENIED"
+            ],
+            "description": "Status do pagamento."
+          },
+          "denialReason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Motivo da recusa do pagamento (opcional)."
+          }
+        },
+        "required": [
+          "id",
+          "doctorId",
+          "patientId",
+          "procedureName",
+          "procedureDate",
+          "procedureValue",
+          "paymentStatus",
+          "denialReason"
         ]
       }
     }
