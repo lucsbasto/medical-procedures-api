@@ -1,6 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { ContactEntity } from './contact.entity';
 import { DefaultEntity } from './default.entity';
+import { DoctorEntity } from './doctor.entity';
+import { MedicalProcedureEntity } from './medical-procedure.entity';
 
 @Entity('patients')
 export class PatientEntity extends DefaultEntity {
@@ -9,4 +11,16 @@ export class PatientEntity extends DefaultEntity {
 
   @Column(() => ContactEntity)
   contact: ContactEntity;
+
+  @OneToMany(
+    () => MedicalProcedureEntity,
+    (medicalProcedure) => medicalProcedure.patient,
+  )
+  medicalProcedures: MedicalProcedureEntity[];
+
+  @ManyToMany(
+    () => DoctorEntity,
+    (doctor) => doctor.patients,
+  )
+  doctors: DoctorEntity[];
 }
