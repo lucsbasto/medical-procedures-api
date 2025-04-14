@@ -23,7 +23,6 @@ export class GenerateFinancialReportByDoctorUseCase implements GenerateFinancial
     }
 
     const procedures = await this.medicalProcedureRepository.findGroupedByDoctor(filter);
-
     return procedures;
   }
 }

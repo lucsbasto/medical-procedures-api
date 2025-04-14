@@ -27,7 +27,9 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
   const startDate = new Date('2025-04-01T00:00:00-03:00');
   const endDate = new Date('2025-04-30T23:59:59-03:00');
   const midDate = new Date('2025-04-15T12:00:00-03:00');
-
+  const doctor1 = new Doctor('doctor-1', 'Dr. João', 'TO-123456', 'Cardiologista');
+  const doctor2 = new Doctor('doctor-2', 'Dra. Maria', 'SP-123456', 'Dermatologista');
+  const doctor3 = new Doctor('doctor-3', 'Dr. Pedro', 'MG-123456', 'Pediatra');
   const procedure1 = new MedicalProcedure(
     '1',
     'doctor-1',
@@ -37,6 +39,7 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
     100,
     PaymentStatus.DENIED,
     'Falta de autorização',
+    doctor1,
   );
   const procedure2 = new MedicalProcedure(
     '2',
@@ -47,6 +50,7 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
     200,
     PaymentStatus.DENIED,
     'Código incorreto',
+    doctor2,
   );
   const procedure3 = new MedicalProcedure(
     '3',
@@ -57,17 +61,11 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
     50,
     PaymentStatus.DENIED,
     'Fora do período',
+    doctor1,
   );
 
-  const doctor1 = new Doctor('doctor-1', 'Dr. João', 'TO-123456', 'Cardiologista');
-  const doctor2 = new Doctor('doctor-2', 'Dra. Maria', 'SP-123456', 'Dermatologista');
-  const doctor3 = new Doctor('doctor-3', 'Dr. Pedro', 'MG-123456', 'Pediatra');
-
   beforeEach(() => {
-    generateDeniedReportByPeriodUseCase = new GenerateDeniedReportByPeriodUseCase(
-      mockMedicalProcedureRepository,
-      mockDoctorRepository,
-    );
+    generateDeniedReportByPeriodUseCase = new GenerateDeniedReportByPeriodUseCase(mockMedicalProcedureRepository);
     mockDoctorRepository.findById.mockImplementation((id) => {
       if (id === 'doctor-1') return Promise.resolve(doctor1);
       if (id === 'doctor-2') return Promise.resolve(doctor2);
@@ -159,7 +157,6 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
       denialReason: 'Fora do período',
     };
     const result = await generateDeniedReportByPeriodUseCase.execute(input);
-
     expect(result).toHaveLength(3);
     expect(result).toEqual([expectedProcedure1, expectedProcedure2, expectedProcedure3]);
   });
@@ -190,7 +187,7 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
     const input: GenerateDeniedReportByPeriodInputDto = { startDate: undefined as any, endDate };
 
     await expect(generateDeniedReportByPeriodUseCase.execute(input)).rejects.toThrow(
-      'Start date and end date must be provided for the Denied report.',
+      'Start date and end date must be provided for the denied report.',
     );
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
@@ -200,7 +197,7 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
     const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate: undefined as any };
 
     await expect(generateDeniedReportByPeriodUseCase.execute(input)).rejects.toThrow(
-      'Start date and end date must be provided for the Denied report.',
+      'Start date and end date must be provided for the denied report.',
     );
     expect(mockMedicalProcedureRepository.findAll).not.toHaveBeenCalled();
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
@@ -216,7 +213,7 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
     expect(mockDoctorRepository.findById).not.toHaveBeenCalled();
   });
 
-  it('should include glossed procedures from multiple doctors within the period with details', async () => {
+  it('should include denied procedures from multiple doctors within the period with details', async () => {
     const input: GenerateDeniedReportByPeriodInputDto = { startDate, endDate };
     const procedure5_in_period = new MedicalProcedure(
       '5',
@@ -227,6 +224,7 @@ describe('GenerateDeniedReportByPeriodUseCase', () => {
       120,
       PaymentStatus.DENIED,
       'Erro de digitação',
+      doctor3,
     );
     mockMedicalProcedureRepository.findAll.mockResolvedValue([procedure1, procedure2, procedure5_in_period]);
 

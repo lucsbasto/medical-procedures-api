@@ -85,7 +85,7 @@ export class TypeOrmMedicalProcedureRepository implements MedicalProcedureReposi
     return response;
   }
 
-  async findGroupedByDoctor(filters: GenerateFinancialReportByDoctorInputDto) {
+  async findGroupedByDoctor(filters: GenerateFinancialReportByDoctorInputDto): Promise<MedicalProcedure[]> {
     const qb = this.ormRepository.createQueryBuilder('procedure').leftJoin('procedure.doctor', 'doctor');
 
     if (filters.startDate && filters.endDate) {

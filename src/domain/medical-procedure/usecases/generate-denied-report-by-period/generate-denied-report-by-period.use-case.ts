@@ -19,7 +19,7 @@ export class GenerateDeniedReportByPeriodUseCase implements GenerateDeniedReport
     const { startDate, endDate } = input;
 
     if (!startDate || !endDate) {
-      throw new Error('Start date and end date must be provided for the glosses report.');
+      throw new Error('Start date and end date must be provided for the denied report.');
     }
 
     if (startDate > endDate) {

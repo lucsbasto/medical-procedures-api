@@ -45,15 +45,15 @@ describe('GetDoctorByIdUseCase', () => {
     });
   });
 
-  it('should return null if the doctor with the given ID does not exist', async () => {
+  it('should throw a NotFoundException if the doctor with the given ID does not exist', async () => {
     const input: GetDoctorByIdInputDto = { id: 'non-existent-id' };
     mockDoctorRepository.findById.mockResolvedValue(null);
 
-    const result = await getDoctorByIdUseCase.execute(input);
+    const promise = getDoctorByIdUseCase.execute(input);
 
     expect(mockDoctorRepository.findById).toHaveBeenCalledTimes(1);
     expect(mockDoctorRepository.findById).toHaveBeenCalledWith(input.id);
-    expect(result).toBeNull();
+    expect(promise).rejects.toThrow();
   });
 
   it('should throw an error if an empty ID is provided', async () => {

@@ -48,15 +48,15 @@ describe('GetMedicalProcedureByIdUseCase', () => {
     });
   });
 
-  it('should return null if the medical procedure with the given ID does not exist', async () => {
+  it('should throw a NotFoundException if the medical procedure with the given ID does not exist', async () => {
     const id = 'non-existent-id';
     mockMedicalProcedureRepository.findById.mockResolvedValue(null);
 
-    const result = await getMedicalProcedureByIdUseCase.execute(id);
+    const promise = getMedicalProcedureByIdUseCase.execute(id);
 
     expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledTimes(1);
     expect(mockMedicalProcedureRepository.findById).toHaveBeenCalledWith(id);
-    expect(result).toBeNull();
+    await expect(promise).rejects.toThrow();
   });
 
   it('should throw an error if an empty ID is provided', async () => {
