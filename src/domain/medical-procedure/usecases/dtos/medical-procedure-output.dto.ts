@@ -8,4 +8,5 @@ export interface MedicalProcedureOutputDto {
   procedureDate: Date;
   procedureValue: number;
   paymentStatus: PaymentStatus;
+  denialReason: string | null;
 }
