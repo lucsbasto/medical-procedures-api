@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../../entities/patient.entity';
 import { PatientRepository } from '../../repositories/patient.repository';
 import { GetPatientByIdOutputDto } from '../dtos/get-patient-by-id-output.dto';
@@ -7,7 +7,10 @@ import { UpdatePatientUseCaseInterface } from './update-patient.use-case.interfa
 
 @Injectable()
 export class UpdatePatientUseCase implements UpdatePatientUseCaseInterface {
-  constructor(private readonly patientRepository: PatientRepository) {}
+  constructor(
+    @Inject('PatientRepository')
+    private readonly patientRepository: PatientRepository,
+  ) {}
 
   async execute(input: UpdatePatientInputDto): Promise<GetPatientByIdOutputDto | null> {
     const { id, name, phone, email } = input;

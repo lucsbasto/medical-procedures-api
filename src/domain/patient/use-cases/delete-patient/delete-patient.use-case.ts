@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PatientRepository } from '../../repositories/patient.repository';
 import { DeletePatientInputDto } from '../dtos/delete-patient-input.dto';
 import { DeletePatientUseCaseInterface } from './delete-patient.use-case.interface';
 
 @Injectable()
 export class DeletePatientUseCase implements DeletePatientUseCaseInterface {
-  constructor(private readonly patientRepository: PatientRepository) {}
+  constructor(
+    @Inject('PatientRepository')
+    private readonly patientRepository: PatientRepository,
+  ) {}
 
   async execute(input: DeletePatientInputDto): Promise<void> {
     const { id } = input;
