@@ -21,8 +21,8 @@ describe('GetAllPatientsUseCase', () => {
 
   it('should return an array of all patients when no filters are provided', async () => {
     const patients = [
-      new Patient('1', 'John Doe', '123', 'john.doe@example.com'),
-      new Patient('2', 'Jane Smith', '456', 'jane.smith@example.com'),
+      new Patient('1', 'John Doe', '123456789', 'john.doe@example.com'),
+      new Patient('2', 'Jane Smith', '987654321', 'jane.smith@example.com'),
     ];
     mockPatientRepository.findAll.mockResolvedValue(patients);
 
@@ -32,8 +32,8 @@ describe('GetAllPatientsUseCase', () => {
     expect(mockPatientRepository.findAll).toHaveBeenCalledWith(undefined);
     expect(result).toHaveLength(2);
     expect(result).toEqual([
-      { id: '1', name: 'John Doe', phone: '123', email: 'john.doe@example.com' },
-      { id: '2', name: 'Jane Smith', phone: '456', email: 'jane.smith@example.com' },
+      { id: '1', name: 'John Doe', phone: '123456789', email: 'john.doe@example.com' },
+      { id: '2', name: 'Jane Smith', phone: '987654321', email: 'jane.smith@example.com' },
     ]);
   });
 
@@ -51,9 +51,9 @@ describe('GetAllPatientsUseCase', () => {
   it('should filter patients by name', async () => {
     const filters: GetAllPatientsInputDto = { name: 'john' };
     const patients = [
-      new Patient('1', 'John Doe', '123', 'john.doe@example.com'),
-      new Patient('2', 'Jane Smith', '456', 'jane.smith@example.com'),
-      new Patient('3', 'Johnny Bravo', '789', 'johnny.bravo@example.com'),
+      new Patient('1', 'John Doe', '123456789', 'john.doe@example.com'),
+      new Patient('2', 'Jane Smith', '123123123', 'jane.smith@example.com'),
+      new Patient('3', 'Johnny Bravo', '987654321', 'johnny.bravo@example.com'),
     ];
     mockPatientRepository.findAll.mockResolvedValue(
       patients.filter((p) => p.name.toLowerCase().includes(filters.name.toLowerCase())),
@@ -65,16 +65,16 @@ describe('GetAllPatientsUseCase', () => {
     expect(mockPatientRepository.findAll).toHaveBeenCalledWith(filters);
     expect(result).toHaveLength(2);
     expect(result).toEqual([
-      { id: '1', name: 'John Doe', phone: '123', email: 'john.doe@example.com' },
-      { id: '3', name: 'Johnny Bravo', phone: '789', email: 'johnny.bravo@example.com' },
+      { id: '1', name: 'John Doe', phone: '123456789', email: 'john.doe@example.com' },
+      { id: '3', name: 'Johnny Bravo', phone: '987654321', email: 'johnny.bravo@example.com' },
     ]);
   });
 
   it('should filter patients by phone', async () => {
-    const filters: GetAllPatientsInputDto = { phone: '456' };
+    const filters: GetAllPatientsInputDto = { phone: '987654321' };
     const patients = [
-      new Patient('1', 'John Doe', '123', 'john.doe@example.com'),
-      new Patient('2', 'Jane Smith', '456', 'jane.smith@example.com'),
+      new Patient('1', 'John Doe', '123456789', 'john.doe@example.com'),
+      new Patient('2', 'Jane Smith', '987654321', 'jane.smith@example.com'),
     ];
     mockPatientRepository.findAll.mockResolvedValue(patients.filter((p) => p.phone.includes(filters.phone)));
 
@@ -83,14 +83,14 @@ describe('GetAllPatientsUseCase', () => {
     expect(mockPatientRepository.findAll).toHaveBeenCalledTimes(1);
     expect(mockPatientRepository.findAll).toHaveBeenCalledWith(filters);
     expect(result).toHaveLength(1);
-    expect(result).toEqual([{ id: '2', name: 'Jane Smith', phone: '456', email: 'jane.smith@example.com' }]);
+    expect(result).toEqual([{ id: '2', name: 'Jane Smith', phone: '987654321', email: 'jane.smith@example.com' }]);
   });
 
   it('should handle multiple filters', async () => {
-    const filters: GetAllPatientsInputDto = { name: 'john', phone: '123' };
+    const filters: GetAllPatientsInputDto = { name: 'john', phone: '123456789' };
     const patients = [
-      new Patient('1', 'John Doe', '123', 'john.doe@example.com'),
-      new Patient('2', 'Johnny Bravo', '789', 'johnny.bravo@example.com'),
+      new Patient('1', 'John Doe', '123456789', 'john.doe@example.com'),
+      new Patient('2', 'Johnny Bravo', '987654321', 'johnny.bravo@example.com'),
     ];
     mockPatientRepository.findAll.mockResolvedValue(
       patients.filter(
@@ -103,14 +103,14 @@ describe('GetAllPatientsUseCase', () => {
     expect(mockPatientRepository.findAll).toHaveBeenCalledTimes(1);
     expect(mockPatientRepository.findAll).toHaveBeenCalledWith(filters);
     expect(result).toHaveLength(1);
-    expect(result).toEqual([{ id: '1', name: 'John Doe', phone: '123', email: 'john.doe@example.com' }]);
+    expect(result).toEqual([{ id: '1', name: 'John Doe', phone: '123456789', email: 'john.doe@example.com' }]);
   });
 
   it('should return all patients if filters are empty', async () => {
     const filters: GetAllPatientsInputDto = {};
     const patients = [
-      new Patient('1', 'John Doe', '123', 'john.doe@example.com'),
-      new Patient('2', 'Jane Smith', '456', 'jane.smith@example.com'),
+      new Patient('1', 'John Doe', '123456789', 'john.doe@example.com'),
+      new Patient('2', 'Jane Smith', '987654321', 'jane.smith@example.com'),
     ];
     mockPatientRepository.findAll.mockResolvedValue(patients);
 
@@ -120,8 +120,8 @@ describe('GetAllPatientsUseCase', () => {
     expect(mockPatientRepository.findAll).toHaveBeenCalledWith(filters);
     expect(result).toHaveLength(2);
     expect(result).toEqual([
-      { id: '1', name: 'John Doe', phone: '123', email: 'john.doe@example.com' },
-      { id: '2', name: 'Jane Smith', phone: '456', email: 'jane.smith@example.com' },
+      { id: '1', name: 'John Doe', phone: '123456789', email: 'john.doe@example.com' },
+      { id: '2', name: 'Jane Smith', phone: '987654321', email: 'jane.smith@example.com' },
     ]);
   });
 });

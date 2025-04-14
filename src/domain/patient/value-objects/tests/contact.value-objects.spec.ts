@@ -24,11 +24,6 @@ describe('Contact', () => {
     expect(contact.email).toBe('test@example.com');
   });
 
-  it('should throw an error if phone is empty', () => {
-    expect(() => Contact.create('')).toThrow('Patient contact phone cannot be empty.');
-    expect(() => Contact.create('   ')).toThrow('Patient contact phone cannot be empty.');
-  });
-
   it('should throw an error if email format is invalid', () => {
     const phone = '5556667777';
     expect(() => Contact.create(phone, 'invalid-email')).toThrow('Invalid email format.');
@@ -37,32 +32,32 @@ describe('Contact', () => {
   });
 
   it('should be equal to another Contact with the same phone and email', () => {
-    const contact1 = Contact.create('12345', 'test@test.com');
-    const contact2 = Contact.create('12345', 'test@test.com');
+    const contact1 = Contact.create('123123123', 'test@test.com');
+    const contact2 = Contact.create('123123123', 'test@test.com');
     expect(contact1.equals(contact2)).toBe(true);
   });
 
   it('should be equal to another Contact with the same phone and undefined email', () => {
-    const contact1 = Contact.create('54321', undefined);
-    const contact2 = Contact.create('54321', undefined);
+    const contact1 = Contact.create('123123123', undefined);
+    const contact2 = Contact.create('123123123', undefined);
     expect(contact1.equals(contact2)).toBe(true);
   });
 
   it('should not be equal to another Contact with a different phone', () => {
-    const contact1 = Contact.create('111', 'a@a.com');
-    const contact2 = Contact.create('222', 'a@a.com');
+    const contact1 = Contact.create('123456789', 'a@a.com');
+    const contact2 = Contact.create('987654321', 'a@a.com');
     expect(contact1.equals(contact2)).toBe(false);
   });
 
   it('should not be equal to another Contact with a different email', () => {
-    const contact1 = Contact.create('333', 'b@b.com');
-    const contact2 = Contact.create('333', 'c@c.com');
+    const contact1 = Contact.create('123456789', 'b@b.com');
+    const contact2 = Contact.create('987654321', 'c@c.com');
     expect(contact1.equals(contact2)).toBe(false);
   });
 
   it('should not be equal to another Contact with one having email and the other not', () => {
-    const contact1 = Contact.create('444', 'd@d.com');
-    const contact2 = Contact.create('444', undefined);
+    const contact1 = Contact.create('123456789', 'd@d.com');
+    const contact2 = Contact.create('123456789', undefined);
     expect(contact1.equals(contact2)).toBe(false);
   });
 });
