@@ -17,5 +17,4 @@ export const dataSourcePostgres: DataSourceOptions = {
   synchronize: true,
 } as DataSourceOptions;
 
-console.log(dataSourcePostgres);
 export const dataSourceMigrations = new DataSource({ ...dataSourcePostgres });
