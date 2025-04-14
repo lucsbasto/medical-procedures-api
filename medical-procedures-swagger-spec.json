@@ -1,6 +1,108 @@
 {
   "openapi": "3.0.0",
-  "paths": {},
+  "paths": {
+    "/api/doctors": {
+      "post": {
+        "operationId": "DoctorsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDoctorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Médico criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoctorResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de requisição inválidos."
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Doctors"
+        ]
+      },
+      "get": {
+        "operationId": "DoctorsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de todos os médicos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoctorResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Doctors"
+        ]
+      }
+    },
+    "/api/doctors/{id}": {
+      "get": {
+        "operationId": "DoctorsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes de um médico específico.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoctorResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do médico em formato inválido."
+          },
+          "404": {
+            "description": "Médico não encontrado."
+          },
+          "500": {
+            "description": "Erro interno do servidor."
+          }
+        },
+        "tags": [
+          "Doctors"
+        ]
+      }
+    }
+  },
   "info": {
     "title": "Medical Procedures",
     "description": "This is the OpenAPI specifications for the Medical Procedures API",
@@ -17,6 +119,65 @@
         "type": "http"
       }
     },
-    "schemas": {}
+    "schemas": {
+      "CreateDoctorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome completo do médico.",
+            "example": "Dr. João Silva",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "crm": {
+            "type": "string",
+            "description": "Número do CRM do médico.",
+            "example": "SP-12345",
+            "minLength": 5,
+            "maxLength": 20
+          },
+          "specialty": {
+            "type": "string",
+            "description": "Especialidade do médico.",
+            "example": "Cardiologia",
+            "minLength": 3,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "name",
+          "crm",
+          "specialty"
+        ]
+      },
+      "DoctorResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do médico (UUID)."
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome completo do médico."
+          },
+          "crm": {
+            "type": "string",
+            "description": "Número do CRM do médico."
+          },
+          "specialty": {
+            "type": "string",
+            "description": "Especialidade do médico."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "crm",
+          "specialty"
+        ]
+      }
+    }
   }
 }
