@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  NotFoundException,
-  Param,
-  Patch,
-  Post,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
 
 import {
   ApiBadRequestResponse,
@@ -19,10 +9,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { GetAllPatientsUseCase } from '@/domain/patient/use-cases/get-all-patients/get-all-patients.use-case';
-import { GetPatientByIdUseCase } from '@/domain/patient/use-cases/get-patient-by-id/get-patient-by-id.use-case';
-import { RegisterPatientUseCase } from '@/domain/patient/use-cases/register-patient/register-patient.use-case';
-import { UpdatePatientUseCase } from '@/domain/patient/use-cases/update-patient/update-patient.use-case';
+import { ILoggerService } from '@/domain/interfaces/common/logger';
+import { GetAllPatientsUseCaseInterface } from '@/domain/patient/use-cases/get-all-patients/get-all-patients.use-case.interface';
+import { GetPatientByIdUseCaseInterface } from '@/domain/patient/use-cases/get-patient-by-id/get-patient-by-id.use-case.interface';
+import { RegisterPatientUseCaseInterface } from '@/domain/patient/use-cases/register-patient/register-patient.use-case.interface';
+import { UpdatePatientUseCaseInterface } from '@/domain/patient/use-cases/update-patient/update-patient.use-case.interface';
 import {
   CreatePatientInputDto,
   CreatePatientResponseDto,
@@ -36,33 +27,35 @@ import {
 @Controller('patients')
 export class PatientsController {
   constructor(
-    private readonly registerPatientUseCase: RegisterPatientUseCase,
-    private readonly getAllPatientsUseCase: GetAllPatientsUseCase,
-    private readonly getPatientByIdUseCase: GetPatientByIdUseCase,
-    private readonly updatePatientUseCase: UpdatePatientUseCase,
-  ) {}
+    @Inject('ILoggerService')
+    private readonly loggerService: ILoggerService,
+    @Inject('RegisterPatientUseCaseInterface')
+    private readonly registerPatientUseCase: RegisterPatientUseCaseInterface,
+    @Inject('GetAllPatientsUseCaseInterface')
+    private readonly getAllPatientsUseCase: GetAllPatientsUseCaseInterface,
+    @Inject('GetPatientByIdUseCaseInterface')
+    private readonly getPatientByIdUseCase: GetPatientByIdUseCaseInterface,
+    @Inject('UpdatePatientUseCaseInterface')
+    private readonly updatePatientUseCase: UpdatePatientUseCaseInterface,
+  ) {
+    this.loggerService.setContext(PatientsController.name);
+  }
 
   @Post()
   @ApiCreatedResponse({ description: 'Paciente criado com sucesso.', type: CreatePatientResponseDto })
   @ApiBadRequestResponse({ description: 'Dados de requisição inválidos.' })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async create(@Body(new ValidationPipe()) createPatientDto: CreatePatientInputDto): Promise<CreatePatientResponseDto> {
-    try {
-      return await this.registerPatientUseCase.execute(createPatientDto);
-    } catch (error) {
-      throw new InternalServerErrorException('Erro ao criar o paciente.');
-    }
+    this.loggerService.info(`create - ${JSON.stringify(createPatientDto)}`);
+    return await this.registerPatientUseCase.execute(createPatientDto);
   }
 
   @Get()
   @ApiOkResponse({ description: 'Lista de todos os pacientes.', type: [GetAllPatientResponseDto] })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async findAll(): Promise<GetAllPatientResponseDto[]> {
-    try {
-      return await this.getAllPatientsUseCase.execute();
-    } catch (error) {
-      throw new InternalServerErrorException('Erro ao listar os pacientes.');
-    }
+    this.loggerService.info('findAll');
+    return await this.getAllPatientsUseCase.execute();
   }
 
   @Get(':id')
@@ -71,18 +64,8 @@ export class PatientsController {
   @ApiBadRequestResponse({ description: 'ID do paciente em formato inválido.' })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async findOne(@Param('id') id: string): Promise<GetByIdPatientResponseDto> {
-    try {
-      const patient = await this.getPatientByIdUseCase.execute({ id });
-      if (!patient) {
-        throw new NotFoundException(`Paciente com ID ${id} não encontrado.`);
-      }
-      return patient;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Erro ao buscar o paciente.');
-    }
+    this.loggerService.info(`findOne - id: ${id}`);
+    return await this.getPatientByIdUseCase.execute({ id });
   }
 
   @Patch(':id')
@@ -94,17 +77,7 @@ export class PatientsController {
     @Param('id') id: string,
     @Body(new ValidationPipe()) updatePatientDto: UpdatePatientInputDto,
   ): Promise<UpdatePatientResponseDto> {
-    try {
-      const updatedPatient = await this.updatePatientUseCase.execute({ id, ...updatePatientDto });
-      if (!updatedPatient) {
-        throw new NotFoundException(`Paciente com ID ${id} não encontrado.`);
-      }
-      return updatedPatient;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Erro ao atualizar o paciente.');
-    }
+    this.loggerService.info(`update - id: ${id} - ${JSON.stringify(updatePatientDto)}`);
+    return await this.updatePatientUseCase.execute({ id, ...updatePatientDto });
   }
 }

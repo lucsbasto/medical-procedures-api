@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { DoctorRepository } from '../../repositories/doctor.repository';
 
 import { DoctorOutputDto } from '../dtos/doctor-output.dto';
@@ -16,13 +16,13 @@ export class GetDoctorByIdUseCase implements GetDoctorByIdUseCaseInterface {
     const { id } = input;
 
     if (!id || id.trim() === '') {
-      throw new Error('Doctor ID cannot be empty.');
+      throw new BadRequestException('Doctor ID cannot be empty.');
     }
 
     const doctor = await this.doctorRepository.findById(id);
 
     if (!doctor) {
-      return null;
+      throw new NotFoundException('Doctor not found.');
     }
 
     return {

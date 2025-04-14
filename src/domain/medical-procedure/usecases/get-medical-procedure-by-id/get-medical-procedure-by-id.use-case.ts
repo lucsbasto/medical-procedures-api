@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
 import { MedicalProcedureOutputDto } from '../dtos/medical-procedure-output.dto';
 import { GetMedicalProcedureByIdUseCaseInterface } from './get-medical-procedure-by-id.use-case.interface';
@@ -12,13 +12,13 @@ export class GetMedicalProcedureByIdUseCase implements GetMedicalProcedureByIdUs
 
   async execute(id: string): Promise<MedicalProcedureOutputDto | null> {
     if (!id || id.trim() === '') {
-      throw new Error('Medical procedure ID cannot be empty.');
+      throw new BadRequestException('Medical procedure ID cannot be empty.');
     }
 
     const medicalProcedure = await this.medicalProcedureRepository.findById(id);
 
     if (!medicalProcedure) {
-      return null;
+      throw new NotFoundException('Medical procedure not found.');
     }
 
     return {

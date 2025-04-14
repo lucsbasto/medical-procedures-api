@@ -6,7 +6,7 @@ import { LoggerModule } from './common/logger/logger.module';
 import { DataSourcePostgresModule } from './infrastructure/database/typeorm/config/data-source-postgres.module';
 
 @Module({
-  imports: [DataSourcePostgresModule, LoggerModule, DoctorsModule, PatientsModule, MedicalProceduresModule],
+  imports: [LoggerModule, DataSourcePostgresModule, DoctorsModule, PatientsModule, MedicalProceduresModule],
   controllers: [],
   providers: [],
 })

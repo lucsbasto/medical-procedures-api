@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
 
 import { GenerateFinancialReportByDoctorInputDto } from '../dtos/generate-financial-report-by-doctor-input.dto';
@@ -15,11 +15,11 @@ export class GenerateFinancialReportByDoctorUseCase implements GenerateFinancial
     const { startDate, endDate } = filter;
 
     if (!startDate || !endDate) {
-      throw new Error('Start date and end date must be provided for the financial report.');
+      throw new BadRequestException('Start date and end date must be provided for the financial report.');
     }
 
     if (startDate > endDate) {
-      throw new Error('Start date cannot be after the end date.');
+      throw new BadRequestException('Start date cannot be after the end date.');
     }
 
     const procedures = await this.medicalProcedureRepository.findGroupedByDoctor(filter);

@@ -1,16 +1,8 @@
-import { GetAllDoctorsUseCase } from '@/domain/doctor/use-cases/get-all-doctors/get-all-doctors.use-case';
-import { GetDoctorByIdUseCase } from '@/domain/doctor/use-cases/get-doctor-by-id/get-doctor-by-id.use-case';
-import { RegisterDoctorUseCase } from '@/domain/doctor/use-cases/register-doctor/register-doctor.use-case';
-import {
-  Body,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  NotFoundException,
-  Param,
-  Post,
-  ValidationPipe,
-} from '@nestjs/common';
+import { GetAllDoctorsUseCaseInterface } from '@/domain/doctor/use-cases/get-all-doctors/get-all-doctors.use-case.interface';
+import { GetDoctorByIdUseCaseInterface } from '@/domain/doctor/use-cases/get-doctor-by-id/get-doctor-by-id.use-case.interface';
+import { RegisterDoctorUseCaseInterface } from '@/domain/doctor/use-cases/register-doctor/register-doctor.use-case.interface';
+import { ILoggerService } from '@/domain/interfaces/common/logger';
+import { Body, Controller, Get, Inject, Param, Post, ValidationPipe } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -26,32 +18,33 @@ import { DoctorResponseDto } from './dtos/doctor-response.dto';
 @Controller('doctors')
 export class DoctorsController {
   constructor(
-    private readonly registerDoctorUseCase: RegisterDoctorUseCase,
-    private readonly getAllDoctorsUseCase: GetAllDoctorsUseCase,
-    private readonly getDoctorByIdUseCase: GetDoctorByIdUseCase,
-  ) {}
+    @Inject('ILoggerService')
+    private readonly loggerService: ILoggerService,
+    @Inject('RegisterDoctorUseCaseInterface')
+    private readonly registerDoctorUseCase: RegisterDoctorUseCaseInterface,
+    @Inject('GetAllDoctorsUseCaseInterface')
+    private readonly getAllDoctorsUseCase: GetAllDoctorsUseCaseInterface,
+    @Inject('GetDoctorByIdUseCaseInterface')
+    private readonly getDoctorByIdUseCase: GetDoctorByIdUseCaseInterface,
+  ) {
+    this.loggerService.setContext(DoctorsController.name);
+  }
 
   @Post()
   @ApiCreatedResponse({ description: 'Médico criado com sucesso.', type: DoctorResponseDto })
   @ApiBadRequestResponse({ description: 'Dados de requisição inválidos.' })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async create(@Body(new ValidationPipe()) createDoctorDto: CreateDoctorDto): Promise<DoctorResponseDto> {
-    try {
-      return await this.registerDoctorUseCase.execute(createDoctorDto);
-    } catch (error) {
-      throw new InternalServerErrorException('Erro ao criar o médico.');
-    }
+    this.loggerService.info(`create - ${JSON.stringify(createDoctorDto)}`);
+    return await this.registerDoctorUseCase.execute(createDoctorDto);
   }
 
   @Get()
   @ApiOkResponse({ description: 'Lista de todos os médicos.', type: [DoctorResponseDto] })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async findAll(): Promise<DoctorResponseDto[]> {
-    try {
-      return await this.getAllDoctorsUseCase.execute();
-    } catch (error) {
-      throw new InternalServerErrorException('Erro ao listar os médicos.');
-    }
+    this.loggerService.info('findAll');
+    return await this.getAllDoctorsUseCase.execute();
   }
 
   @Get(':id')
@@ -60,17 +53,7 @@ export class DoctorsController {
   @ApiBadRequestResponse({ description: 'ID do médico em formato inválido.' })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async findOne(@Param('id') id: string): Promise<DoctorResponseDto> {
-    try {
-      const doctor = await this.getDoctorByIdUseCase.execute({ id });
-      if (!doctor) {
-        throw new NotFoundException(`Médico com ID ${id} não encontrado.`);
-      }
-      return doctor;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Erro ao buscar o médico.');
-    }
+    this.loggerService.info(`findOne - ${id}`);
+    return await this.getDoctorByIdUseCase.execute({ id });
   }
 }

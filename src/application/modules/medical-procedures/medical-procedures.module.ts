@@ -1,3 +1,4 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import { DeleteMedicalProcedureUseCase } from '@/domain/medical-procedure/usecases/delete-medical-procedure/delete-medical-procedure.use-case';
 import { GenerateDeniedReportByPeriodUseCase } from '@/domain/medical-procedure/usecases/generate-denied-report-by-period/generate-denied-report-by-period.use-case';
 import { GenerateFinancialReportByDoctorUseCase } from '@/domain/medical-procedure/usecases/generate-financial-report-by-doctor/generate-financial-report-by-doctor.use-case';
@@ -5,9 +6,7 @@ import { GetAllMedicalProceduresUseCase } from '@/domain/medical-procedure/useca
 import { GetMedicalProcedureByIdUseCase } from '@/domain/medical-procedure/usecases/get-medical-procedure-by-id/get-medical-procedure-by-id.use-case';
 import { RegisterMedicalProcedureUseCase } from '@/domain/medical-procedure/usecases/register-medical-procedure/register-medical-procedure.use-case';
 import { UpdateMedicalProcedureUseCase } from '@/domain/medical-procedure/usecases/update-medical-procedure/update-medical-procedure.use-case';
-import { DoctorEntity } from '@/infrastructure/database/typeorm/entities/doctor.entity';
 import { MedicalProcedureEntity } from '@/infrastructure/database/typeorm/entities/medical-procedure.entity';
-import { TypeOrmDoctorRepository } from '@/infrastructure/database/typeorm/repositories/doctor.repository';
 import { TypeOrmMedicalProcedureRepository } from '@/infrastructure/database/typeorm/repositories/medical-procedure.repository';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,23 +15,48 @@ import { FinancialReportController } from './controllers/financial-report.contro
 import { MedicalProceduresController } from './controllers/medical-procedures.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MedicalProcedureEntity, DoctorEntity])],
+  imports: [TypeOrmModule.forFeature([MedicalProcedureEntity])],
   controllers: [MedicalProceduresController, FinancialReportController, DeniedReportController],
   providers: [
-    RegisterMedicalProcedureUseCase,
-    GetMedicalProcedureByIdUseCase,
-    GetAllMedicalProceduresUseCase,
-    UpdateMedicalProcedureUseCase,
-    DeleteMedicalProcedureUseCase,
-    GenerateFinancialReportByDoctorUseCase,
-    GenerateDeniedReportByPeriodUseCase,
+    {
+      provide: 'ILoggerService',
+      useClass: LoggerService,
+    },
+    {
+      provide: 'GenerateDeniedReportByPeriodUseCaseInterface',
+      useClass: GenerateDeniedReportByPeriodUseCase,
+    },
+    {
+      provide: 'RegisterMedicalProcedureUseCaseInterface',
+      useClass: RegisterMedicalProcedureUseCase,
+    },
+    {
+      provide: 'GenerateFinancialReportByDoctorUseCaseInterface',
+      useClass: GenerateFinancialReportByDoctorUseCase,
+    },
+    {
+      provide: 'GetMedicalProcedureByIdUseCaseInterface',
+      useClass: GetMedicalProcedureByIdUseCase,
+    },
+    {
+      provide: 'GetAllMedicalProceduresUseCaseInterface',
+      useClass: GetAllMedicalProceduresUseCase,
+    },
+    {
+      provide: 'UpdateMedicalProcedureUseCaseInterface',
+      useClass: UpdateMedicalProcedureUseCase,
+    },
+    {
+      provide: 'DeleteMedicalProcedureUseCaseInterface',
+      useClass: DeleteMedicalProcedureUseCase,
+    },
+    {
+      provide: 'GenerateFinancialReportByDoctorUseCaseInterface',
+      useClass: GenerateFinancialReportByDoctorUseCase,
+    },
     {
       provide: 'MedicalProcedureRepository',
       useClass: TypeOrmMedicalProcedureRepository,
-    },
-    {
-      provide: 'DoctorRepository',
-      useClass: TypeOrmDoctorRepository,
     },
   ],
 })

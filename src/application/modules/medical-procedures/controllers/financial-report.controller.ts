@@ -1,5 +1,6 @@
-import { GenerateFinancialReportByDoctorUseCase } from '@/domain/medical-procedure/usecases/generate-financial-report-by-doctor/generate-financial-report-by-doctor.use-case';
-import { Controller, Get, InternalServerErrorException, Query, ValidationPipe } from '@nestjs/common';
+import { ILoggerService } from '@/domain/interfaces/common/logger';
+import { GenerateFinancialReportByDoctorUseCaseInterface } from '@/domain/medical-procedure/usecases/generate-financial-report-by-doctor/generate-financial-report-by-doctor.use-case.interface';
+import { Controller, Get, Inject, Query, ValidationPipe } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { GenerateFinancialReportByDoctorInputDto } from './dtos/generate-financial-report-by-doctor-input.dto';
 import { GenerateFinancialReportByDoctorOutputDto } from './dtos/generate-financial-report-by-doctor-output.dto';
@@ -7,7 +8,14 @@ import { GenerateFinancialReportByDoctorOutputDto } from './dtos/generate-financ
 @ApiTags('Reports')
 @Controller('reports/financial')
 export class FinancialReportController {
-  constructor(private readonly generateFinancialReportByDoctorUseCase: GenerateFinancialReportByDoctorUseCase) {}
+  constructor(
+    @Inject('ILoggerService')
+    private readonly loggerService: ILoggerService,
+    @Inject('GenerateFinancialReportByDoctorUseCaseInterface')
+    private readonly generateFinancialReportByDoctorUseCase: GenerateFinancialReportByDoctorUseCaseInterface,
+  ) {
+    this.loggerService.setContext(FinancialReportController.name);
+  }
 
   @Get()
   @ApiOkResponse({
@@ -19,11 +27,7 @@ export class FinancialReportController {
   async getFinancialReport(
     @Query(new ValidationPipe({ transform: true })) query: GenerateFinancialReportByDoctorInputDto,
   ): Promise<GenerateFinancialReportByDoctorOutputDto[]> {
-    try {
-      return await this.generateFinancialReportByDoctorUseCase.execute(query);
-    } catch (error) {
-      console.error('Erro ao gerar relatório financeiro por médico:', error);
-      throw new InternalServerErrorException('Erro ao gerar relatório financeiro por médico.');
-    }
+    this.loggerService.info(`getFinancialReport - ${JSON.stringify(query)}`);
+    return await this.generateFinancialReportByDoctorUseCase.execute(query);
   }
 }

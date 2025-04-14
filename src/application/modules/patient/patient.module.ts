@@ -1,3 +1,4 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import { GetAllPatientsUseCase } from '@/domain/patient/use-cases/get-all-patients/get-all-patients.use-case';
 import { GetPatientByIdUseCase } from '@/domain/patient/use-cases/get-patient-by-id/get-patient-by-id.use-case';
 import { RegisterPatientUseCase } from '@/domain/patient/use-cases/register-patient/register-patient.use-case';
@@ -12,10 +13,26 @@ import { PatientsController } from './controllers/patient.controller';
   imports: [TypeOrmModule.forFeature([PatientEntity])],
   controllers: [PatientsController],
   providers: [
-    RegisterPatientUseCase,
-    GetAllPatientsUseCase,
-    GetPatientByIdUseCase,
-    UpdatePatientUseCase,
+    {
+      provide: 'ILoggerService',
+      useClass: LoggerService,
+    },
+    {
+      provide: 'RegisterPatientUseCaseInterface',
+      useClass: RegisterPatientUseCase,
+    },
+    {
+      provide: 'GetAllPatientsUseCaseInterface',
+      useClass: GetAllPatientsUseCase,
+    },
+    {
+      provide: 'GetPatientByIdUseCaseInterface',
+      useClass: GetPatientByIdUseCase,
+    },
+    {
+      provide: 'UpdatePatientUseCaseInterface',
+      useClass: UpdatePatientUseCase,
+    },
     {
       provide: 'PatientRepository',
       useClass: TypeOrmPatientRepository,

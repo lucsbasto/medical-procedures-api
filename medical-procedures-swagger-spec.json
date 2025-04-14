@@ -252,7 +252,7 @@
     },
     "/api/medical-procedures": {
       "post": {
-        "operationId": "MedicalProceduresController_register",
+        "operationId": "MedicalProceduresController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -539,13 +539,6 @@
   "tags": [],
   "servers": [],
   "components": {
-    "securitySchemes": {
-      "bearer": {
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "type": "http"
-      }
-    },
     "schemas": {
       "CreateDoctorDto": {
         "type": "object",

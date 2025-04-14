@@ -1,20 +1,10 @@
-import { DeleteMedicalProcedureUseCase } from '@/domain/medical-procedure/usecases/delete-medical-procedure/delete-medical-procedure.use-case';
-import { GetAllMedicalProceduresUseCase } from '@/domain/medical-procedure/usecases/get-all-medical-procedures/get-all-medical-procedures.use-case';
-import { GetMedicalProcedureByIdUseCase } from '@/domain/medical-procedure/usecases/get-medical-procedure-by-id/get-medical-procedure-by-id.use-case';
-import { RegisterMedicalProcedureUseCase } from '@/domain/medical-procedure/usecases/register-medical-procedure/register-medical-procedure.use-case';
-import { UpdateMedicalProcedureUseCase } from '@/domain/medical-procedure/usecases/update-medical-procedure/update-medical-procedure.use-case';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
-  NotFoundException,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { ILoggerService } from '@/domain/interfaces/common/logger';
+import { DeleteMedicalProcedureUseCaseInterface } from '@/domain/medical-procedure/usecases/delete-medical-procedure/delete-medical-procedure.use-case.interface';
+import { GetAllMedicalProceduresUseCaseInterface } from '@/domain/medical-procedure/usecases/get-all-medical-procedures/get-all-medical-procedures.use-case.interface';
+import { GetMedicalProcedureByIdUseCaseInterface } from '@/domain/medical-procedure/usecases/get-medical-procedure-by-id/get-medical-procedure-by-id.use-case.interface';
+import { RegisterMedicalProcedureUseCaseInterface } from '@/domain/medical-procedure/usecases/register-medical-procedure/register-medical-procedure.use-case.interface';
+import { UpdateMedicalProcedureUseCaseInterface } from '@/domain/medical-procedure/usecases/update-medical-procedure/update-medical-procedure.use-case.interface';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Post, Put } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -36,12 +26,21 @@ import {
 @Controller('medical-procedures')
 export class MedicalProceduresController {
   constructor(
-    private readonly registerMedicalProcedureUseCase: RegisterMedicalProcedureUseCase,
-    private readonly getMedicalProcedureByIdUseCase: GetMedicalProcedureByIdUseCase,
-    private readonly getAllMedicalProceduresUseCase: GetAllMedicalProceduresUseCase,
-    private readonly updateMedicalProcedureUseCase: UpdateMedicalProcedureUseCase,
-    private readonly deleteMedicalProcedureUseCase: DeleteMedicalProcedureUseCase,
-  ) {}
+    @Inject('ILoggerService')
+    private readonly loggerService: ILoggerService,
+    @Inject('RegisterMedicalProcedureUseCaseInterface')
+    private readonly registerMedicalProcedureUseCase: RegisterMedicalProcedureUseCaseInterface,
+    @Inject('GetMedicalProcedureByIdUseCaseInterface')
+    private readonly getMedicalProcedureByIdUseCase: GetMedicalProcedureByIdUseCaseInterface,
+    @Inject('GetAllMedicalProceduresUseCaseInterface')
+    private readonly getAllMedicalProceduresUseCase: GetAllMedicalProceduresUseCaseInterface,
+    @Inject('UpdateMedicalProcedureUseCaseInterface')
+    private readonly updateMedicalProcedureUseCase: UpdateMedicalProcedureUseCaseInterface,
+    @Inject('DeleteMedicalProcedureUseCaseInterface')
+    private readonly deleteMedicalProcedureUseCase: DeleteMedicalProcedureUseCaseInterface,
+  ) {
+    this.loggerService.setContext(MedicalProceduresController.name);
+  }
 
   @Post()
   @ApiCreatedResponse({
@@ -49,15 +48,11 @@ export class MedicalProceduresController {
     description: 'Medical procedure registered successfully.',
   })
   @ApiBadRequestResponse({ description: 'Invalid input data.' })
-  async register(
+  async create(
     @Body() createMedicalProcedureInputDto: CreateMedicalProcedureInputDto,
   ): Promise<CreateMedicalProcedureResponseDto> {
-    try {
-      return this.registerMedicalProcedureUseCase.execute(createMedicalProcedureInputDto);
-    } catch (error) {
-      console.log(error);
-      throw new Error('Failed to register medical procedure');
-    }
+    this.loggerService.log(`create: ${JSON.stringify(createMedicalProcedureInputDto)}`);
+    return this.registerMedicalProcedureUseCase.execute(createMedicalProcedureInputDto);
   }
 
   @Get(':id')
@@ -66,22 +61,15 @@ export class MedicalProceduresController {
   @ApiNotFoundResponse({ description: 'Medical procedure not found.' })
   @ApiBadRequestResponse({ description: 'Invalid ID format.' })
   async findById(@Param('id') id: string): Promise<GetMedicalProcedureByIdResponseDto> {
-    const medicalProcedure = await this.getMedicalProcedureByIdUseCase.execute(id);
-    if (!medicalProcedure) {
-      throw new NotFoundException('Medical procedure not found');
-    }
-    return medicalProcedure;
+    this.loggerService.log(`findById: ${id}`);
+    return await this.getMedicalProcedureByIdUseCase.execute(id);
   }
 
   @Get()
   @ApiOkResponse({ type: [GetAllMedicalProceduresResponseDto], description: 'List of all medical procedures.' })
   async findAll(): Promise<GetAllMedicalProceduresResponseDto> {
-    try {
-      return this.getAllMedicalProceduresUseCase.execute();
-    } catch (error) {
-      console.log(error);
-      throw new Error('Failed to get medical procedures');
-    }
+    this.loggerService.log('findAll');
+    return this.getAllMedicalProceduresUseCase.execute();
   }
 
   @Put(':id')
@@ -93,14 +81,11 @@ export class MedicalProceduresController {
     @Param('id') id: string,
     @Body() updateMedicalProcedureInputDto: UpdateMedicalProcedureInputDto,
   ): Promise<UpdateMedicalProcedureResponseDto> {
-    const medicalProcedure = await this.updateMedicalProcedureUseCase.execute({
+    this.loggerService.log(`update: ${id} - ${JSON.stringify(updateMedicalProcedureInputDto)}`);
+    return await this.updateMedicalProcedureUseCase.execute({
       id,
       ...updateMedicalProcedureInputDto,
     });
-    if (!medicalProcedure) {
-      throw new NotFoundException('Medical procedure not found');
-    }
-    return medicalProcedure;
   }
 
   @Delete(':id')
@@ -110,6 +95,7 @@ export class MedicalProceduresController {
   @ApiNotFoundResponse({ description: 'Medical procedure not found.' })
   @ApiBadRequestResponse({ description: 'Invalid ID format.' })
   async delete(@Param('id') id: string): Promise<void> {
+    this.loggerService.log(`delete: ${id}`);
     await this.deleteMedicalProcedureUseCase.execute({ id });
   }
 }

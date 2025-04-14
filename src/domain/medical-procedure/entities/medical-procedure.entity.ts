@@ -1,4 +1,5 @@
 import { Doctor } from '@/domain/doctor/entities/doctor.entity';
+import { BadRequestException } from '@nestjs/common';
 import { PaymentStatus } from '../enums/payment-status.enum';
 
 export class MedicalProcedure {
@@ -76,7 +77,7 @@ export class MedicalProcedure {
   private validatePaymentStatus(): void {
     const allowedStatuses = Object.values(PaymentStatus);
     if (!allowedStatuses.includes(this._paymentStatus)) {
-      throw new Error(
+      throw new BadRequestException(
         `Invalid payment status: ${this._paymentStatus}. Allowed statuses are: ${allowedStatuses.join(', ')}`,
       );
     }
@@ -84,19 +85,19 @@ export class MedicalProcedure {
 
   private validateProcedureName(): void {
     if (!this._procedureName || this._procedureName.trim() === '') {
-      throw new Error('Procedure name cannot be empty.');
+      throw new BadRequestException('Procedure name cannot be empty.');
     }
   }
 
   private validateProcedureValue(): void {
     if (this._procedureValue === undefined || this._procedureValue === null || this._procedureValue < 0) {
-      throw new Error('Procedure value must be a non-negative number.');
+      throw new BadRequestException('Procedure value must be a non-negative number.');
     }
   }
 
   private validateDenialReason(): void {
     if (this._paymentStatus === PaymentStatus.DENIED && (!this._denialReason || this._denialReason.trim() === '')) {
-      throw new Error('Denial reason must be provided when payment status is DENIED.');
+      throw new BadRequestException('Denial reason must be provided when payment status is DENIED.');
     }
   }
 }

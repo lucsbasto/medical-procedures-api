@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { MedicalProcedure } from '../../entities/medical-procedure.entity';
 import { MedicalProcedureRepository } from '../../repositories/medical-procedure.repository';
 import { MedicalProcedureOutputDto } from '../dtos/medical-procedure-output.dto';
@@ -16,23 +16,23 @@ export class RegisterMedicalProcedureUseCase implements RegisterMedicalProcedure
     const { doctorId, patientId, procedureDate, procedureValue, paymentStatus, procedureName, denialReason } = input;
 
     if (!doctorId || doctorId.trim() === '') {
-      throw new Error('Doctor ID cannot be empty.');
+      throw new BadRequestException('Doctor ID cannot be empty.');
     }
     if (!patientId || patientId.trim() === '') {
-      throw new Error('Patient ID cannot be empty.');
+      throw new BadRequestException('Patient ID cannot be empty.');
     }
     if (!procedureDate) {
-      throw new Error('Procedure date cannot be empty.');
+      throw new BadRequestException('Procedure date cannot be empty.');
     }
     if (procedureValue === undefined || procedureValue === null || procedureValue <= 0) {
-      throw new Error('Procedure value must be a positive number.');
+      throw new BadRequestException('Procedure value must be a positive number.');
     }
     if (!paymentStatus) {
-      throw new Error('Payment status cannot be empty.');
+      throw new BadRequestException('Payment status cannot be empty.');
     }
 
     if (!procedureName || procedureName.trim() === '') {
-      throw new Error('Procedure name cannot be empty.');
+      throw new BadRequestException('Procedure name cannot be empty.');
     }
 
     const medicalProcedure = new MedicalProcedure(
