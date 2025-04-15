@@ -2,19 +2,23 @@ import { GetAllDoctorsUseCaseInterface } from '@/domain/doctor/use-cases/get-all
 import { GetDoctorByIdUseCaseInterface } from '@/domain/doctor/use-cases/get-doctor-by-id/get-doctor-by-id.use-case.interface';
 import { RegisterDoctorUseCaseInterface } from '@/domain/doctor/use-cases/register-doctor/register-doctor.use-case.interface';
 import { ILoggerService } from '@/domain/interfaces/common/logger';
-import { Body, Controller, Get, Inject, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CreateDoctorDto } from './dtos/create-doctor.dto';
 import { DoctorResponseDto } from './dtos/doctor-response.dto';
 
 @ApiTags('Doctors')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('doctors')
 export class DoctorsController {
   constructor(

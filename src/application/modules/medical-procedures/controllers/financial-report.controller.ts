@@ -1,11 +1,20 @@
 import { ILoggerService } from '@/domain/interfaces/common/logger';
 import { GenerateFinancialReportByDoctorUseCaseInterface } from '@/domain/medical-procedure/usecases/generate-financial-report-by-doctor/generate-financial-report-by-doctor.use-case.interface';
-import { Controller, Get, Inject, Query, ValidationPipe } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Inject, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { GenerateFinancialReportByDoctorInputDto } from './dtos/generate-financial-report-by-doctor-input.dto';
 import { GenerateFinancialReportByDoctorOutputDto } from './dtos/generate-financial-report-by-doctor-output.dto';
 
 @ApiTags('Reports')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('reports/financial')
 export class FinancialReportController {
   constructor(

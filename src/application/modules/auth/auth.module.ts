@@ -12,6 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../user/user.module';
 import { AuthController } from './controllers/auth.controller';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GenerateJwtUseCase } from './use-cases/generate-jwt.use-case';
 import { SignInUseCase } from './use-cases/sign-in.use-case';
@@ -34,6 +35,7 @@ import { SignUpUseCase } from './use-cases/sign-up.use-case';
   ],
   providers: [
     JwtStrategy,
+    JwtAuthGuard,
     {
       provide: 'ILoggerService',
       useClass: LoggerService,
@@ -68,6 +70,6 @@ import { SignUpUseCase } from './use-cases/sign-up.use-case';
     },
   ],
   controllers: [AuthController],
-  exports: [JwtModule],
+  exports: [JwtModule, JwtAuthGuard],
 })
 export class AuthModule {}

@@ -4,15 +4,29 @@ import { GetAllMedicalProceduresUseCaseInterface } from '@/domain/medical-proced
 import { GetMedicalProcedureByIdUseCaseInterface } from '@/domain/medical-procedure/usecases/get-medical-procedure-by-id/get-medical-procedure-by-id.use-case.interface';
 import { RegisterMedicalProcedureUseCaseInterface } from '@/domain/medical-procedure/usecases/register-medical-procedure/register-medical-procedure.use-case.interface';
 import { UpdateMedicalProcedureUseCaseInterface } from '@/domain/medical-procedure/usecases/update-medical-procedure/update-medical-procedure.use-case.interface';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
   CreateMedicalProcedureInputDto,
   CreateMedicalProcedureResponseDto,
@@ -23,6 +37,8 @@ import {
 } from './dtos';
 
 @ApiTags('Medical Procedures')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('medical-procedures')
 export class MedicalProceduresController {
   constructor(

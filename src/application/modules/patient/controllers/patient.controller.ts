@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Inject, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
@@ -14,6 +15,7 @@ import { GetAllPatientsUseCaseInterface } from '@/domain/patient/use-cases/get-a
 import { GetPatientByIdUseCaseInterface } from '@/domain/patient/use-cases/get-patient-by-id/get-patient-by-id.use-case.interface';
 import { RegisterPatientUseCaseInterface } from '@/domain/patient/use-cases/register-patient/register-patient.use-case.interface';
 import { UpdatePatientUseCaseInterface } from '@/domain/patient/use-cases/update-patient/update-patient.use-case.interface';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
   CreatePatientInputDto,
   CreatePatientResponseDto,
@@ -24,6 +26,8 @@ import {
 } from './dtos';
 
 @ApiTags('Patients')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('patients')
 export class PatientsController {
   constructor(

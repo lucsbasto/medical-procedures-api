@@ -101,6 +101,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Doctors"
         ]
@@ -126,6 +131,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Doctors"
         ]
@@ -165,6 +175,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Doctors"
         ]
@@ -202,6 +217,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Patients"
         ]
@@ -227,6 +247,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Patients"
         ]
@@ -266,6 +291,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Patients"
         ]
@@ -313,6 +343,11 @@
             "description": "Erro interno do servidor."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Patients"
         ]
@@ -347,6 +382,11 @@
             "description": "Invalid input data."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Medical Procedures"
         ]
@@ -369,6 +409,11 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Medical Procedures"
         ]
@@ -406,6 +451,11 @@
             "description": "Medical procedure not found."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Medical Procedures"
         ]
@@ -451,6 +501,11 @@
             "description": "Medical procedure not found."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Medical Procedures"
         ]
@@ -479,6 +534,11 @@
             "description": "Medical procedure not found."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Medical Procedures"
         ]
@@ -539,6 +599,11 @@
             "description": "Erro interno do servidor ao gerar o relatório."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Reports"
         ]
@@ -592,6 +657,11 @@
             "description": "Erro interno do servidor ao gerar o relatório."
           }
         },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "tags": [
           "Reports"
         ]
