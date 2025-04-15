@@ -43,4 +43,10 @@ describe('User', () => {
   it('should get the email', () => {
     expect(user.email).toBe(email);
   });
+
+  it('should set the email', () => {
+    const newEmail = 'updated@example.com';
+    user.email = newEmail;
+    expect(user.email).toBe(newEmail);
+  });
 });
