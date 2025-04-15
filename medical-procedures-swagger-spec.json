@@ -1,6 +1,74 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/auth/login": {
+      "post": {
+        "operationId": "AuthController_signin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "operationId": "AuthController_signup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário registrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignUpResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nome de usuário já existe ou dados inválidos"
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/api/doctors": {
       "post": {
         "operationId": "DoctorsController_create",
@@ -540,6 +608,76 @@
   "servers": [],
   "components": {
     "schemas": {
+      "SignInDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "O nome de usuário para autenticação.",
+            "example": "john.doe"
+          },
+          "password": {
+            "type": "string",
+            "description": "A senha para autenticação.",
+            "example": "securePassword123"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "SignInResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "O token de acesso gerado após o registro bem-sucedido.",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Sfl11xZ9zSaY-yXvVzX-zXvVzX-zXvVzX-zXvVzXv"
+          }
+        },
+        "required": [
+          "accessToken"
+        ]
+      },
+      "SignUpDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The username of the user. Must be unique and not empty.",
+            "example": "johndoe"
+          },
+          "password": {
+            "type": "string",
+            "description": "The password of the user. Must be strong and not empty.",
+            "example": "StrongPassword123!"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email of the user. Must be a valid email address and not empty.",
+            "example": "johndoe@example.com"
+          }
+        },
+        "required": [
+          "username",
+          "password",
+          "email"
+        ]
+      },
+      "SignUpResponseDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "O token de acesso gerado após o registro bem-sucedido.",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Sfl11xZ9zSaY-yXvVzX-zXvVzX-zXvVzX-zXvVzXv"
+          }
+        },
+        "required": [
+          "accessToken"
+        ]
+      },
       "CreateDoctorDto": {
         "type": "object",
         "properties": {

@@ -1,104 +1,78 @@
-🏥 Medical Procedures API
-==========================
+# Medical Procedures API
 
-API RESTful desenvolvida com **NestJS** para gerenciar procedimentos médicos, previsões de pagamento e relatórios de glosas.
-Inclui endpoints para cadastro de procedimentos, geração de relatórios por médico e controle de status de pagamento.
+## Descrição
 
-🔧 Tecnologias utilizadas
---------------------------
-- NestJS
-- TypeScript
-- TypeORM (com suporte a SQLite ou PostgreSQL)
-- Swagger (Documentação automática)
-- Class-validator / Class-transformer
-- JWT Authentication (opcional)
+Esta é uma API RESTful construída com NestJS para gerenciar informações sobre procedimentos médicos, médicos e pacientes. A API permite criar, ler, atualizar e deletar registros, além de gerar relatórios financeiros e de procedimentos negados.
 
-📦 Instalação
---------------
-$ git clone https://github.com/lucsbasto/medical-procedures-api.git
-$ cd medical-procedures-api
-$ npm install
-$ npm run start:dev
+Não existe um front-end para esta API.
 
-⚙️ Configuração
-----------------
-Crie um arquivo .env na raiz do projeto:
+## Tecnologias Utilizadas
 
-DATABASE_URL=sqlite://:memory:
-JWT_SECRET=super-secret
+* [NestJS](https://nestjs.com/): Framework Node.js progressivo para construção de aplicações de servidor eficientes e escaláveis.
+* [TypeScript](https://www.typescriptlang.org/): Superset tipado de JavaScript que oferece melhor tooling e segurança.
+* [TypeORM](https://typeorm.io/): ORM para TypeScript e JavaScript que suporta diversos bancos de dados relacionais.
+* [PostgreSQL](https://www.postgresql.org/): Banco de dados relacional utilizado (configurável).
+* [Swagger](https://swagger.io/): Ferramenta para documentação e exploração da API.
+* [Class-Validator](https://github.com/typestack/class-validator): Biblioteca para validação de dados.
+* [Class-Transformer](https://github.com/typestack/class-transformer): Biblioteca para transformar objetos.
+* [Biomelint](https://biomelint.org/): (Mencionado no contexto, pode ser uma ferramenta de linting específica ou uma referência a práticas de código limpo).
 
-🚀 Endpoints disponíveis
-------------------------
+## Funcionalidades
 
-✅ Cadastro de procedimento médico
-POST /procedures
+* **Gerenciamento de Procedimentos Médicos:**
+    * Criar, listar, buscar, atualizar e deletar procedimentos médicos.
+    * Associação com médicos e pacientes.
+    * Registro de data, valor e status de pagamento.
+    * Registro de motivo de negação (se aplicável).
+* **Gerenciamento de Médicos:**
+    * Criar, listar, buscar, atualizar e deletar informações de médicos.
+* **Gerenciamento de Pacientes:**
+    * Criar, listar, buscar, atualizar e deletar informações de pacientes.
+* **Relatórios:**
+    * **Relatório Financeiro por Médico:** Gera um relatório com o total pago, pendente e negado para um médico em um período específico.
+    * **Relatório de Procedimentos Negados por Período:** Gera uma lista de todos os procedimentos que foram negados dentro de um período específico.
+* **Validação de Dados:**
+    * Validação robusta dos dados de entrada usando DTOs e `class-validator` e.
+* **Documentação da API:**
+    * Documentação interativa da API gerada automaticamente com Swagger, disponível em `/api/docs`.
+* **Tratamento de Erros:**
+    * Tratamento consistente de erros e exceções HTTP com respostas informativas.
+* **Segurança:**
+    * Implementação de práticas de segurança como autenticação, autorização e validação de dados. 
+    * Outras medidas como CORS, Helmet, Rate Limiting também foram implementadas.
+* **Inversão de Dependência (SOLID):**
+    * Adoção do princípio da Inversão de Dependência (DIP) do SOLID, injetando interfaces em vez de implementações concretas para promover o desacoplamento e a testabilidade.
 
-Body:
-{
-  "doctorId": 1,
-  "patientId": 2,
-  "procedureDate": "2025-04-10",
-  "amount": 350.00,
-  "paymentStatus": "pendente"
-}
+## Pré-requisitos
 
-📅 Relatório diário por médico
-GET /reports/daily/2025-04-10
+* [Node.js](https://nodejs.org/) (versão >= 18)
+* [npm](https://www.npmjs.com/) (geralmente instalado com Node.js)
 
-🧾 Relatório de glosas por período
-GET /reports/glosas?start=2025-04-01&end=2025-04-10
 
-💰 Relatório financeiro por médico
-GET /reports/finance
+## Instalação
 
-🔐 Segurança
--------------
-- Validação de entrada com class-validator
-- Sanitização e verificação de campos obrigatórios
-- CORS habilitado
-- Tratamento global de erros
-- Autenticação JWT (opcional)
+1.  Clone o repositório:
+    ```bash
+    git clone https://github.com/lucsbasto/medical-procedures-api
+    cd medical-procedures-api
+    ```
 
-📘 Documentação Swagger
-------------------------
-http://localhost:3000/api
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
 
-Inclui:
-- Modelos de dados
-- Exemplos de request/response
-- Autorização com Bearer Token
+3.  Configure as variáveis de ambiente:
+    * Crie um arquivo `.env` na raiz do projeto com as configurações do banco de dados e outras variáveis sensíveis. Consulte o arquivo `.env.example` para um modelo.
 
-❌ Tratamento de erros
-----------------------
-Exemplo de erro:
-{
-  "statusCode": 404,
-  "message": "Procedimento não encontrado",
-  "error": "Not Found"
-}
+4.  Execute as migrations do TypeORM para criar o schema do banco de dados:
+    ```bash
+    npm run typeorm migration:run
+    ```
 
-📂 Estrutura do projeto
-------------------------
-src/
-├── procedures/
-│   ├── procedure.controller.ts
-│   ├── procedure.service.ts
-│   ├── procedure.entity.ts
-│   └── dto/
-├── reports/
-│   ├── reports.controller.ts
-│   └── reports.service.ts
-├── common/
-│   ├── filters/
-│   └── interceptors/
-└── main.ts
+## Execução
 
-🧑‍💻 Autor
------------
-Lucas Bastos
-linkedin.com/in/lucsbasto
-github.com/lucsbasto
+Para iniciar o servidor em modo de desenvolvimento:
 
-📝 Licença
------------
-Este projeto está sob a licença MIT.
+```bash
+npm run start:dev
