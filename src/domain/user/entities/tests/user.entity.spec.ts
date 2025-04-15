@@ -53,4 +53,10 @@ describe('User', () => {
   it('should get the roles', () => {
     expect(user.roles).toEqual(roles);
   });
+
+  it('should set the roles', () => {
+    const newRoles = ['ADMIN', 'DOCTOR'];
+    user.roles = newRoles;
+    expect(user.roles).toEqual(newRoles);
+  });
 });
