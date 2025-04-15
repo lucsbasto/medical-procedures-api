@@ -29,4 +29,10 @@ describe('User', () => {
   it('should get the username', () => {
     expect(user.username).toBe(username);
   });
+
+  it('should set the username', () => {
+    const newUsername = 'updateduser';
+    user.username = newUsername;
+    expect(user.username).toBe(newUsername);
+  });
 });
