@@ -1,4 +1,3 @@
-// src/auth/auth.module.ts
 import { LoggerService } from '@/common/logger/logger.service';
 import { CreateUserUseCase } from '@/domain/user/usecases/create-user/create-user.use-case';
 import { GetUserByIdUseCase } from '@/domain/user/usecases/get-by-id/get-user-by-id.use-case';

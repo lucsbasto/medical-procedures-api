@@ -1,4 +1,3 @@
-// src/auth/auth.controller.ts
 import { Body, Controller, HttpStatus, Inject, Post, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignInUseCaseInterface } from '../use-cases/sign-in.use-case.interface';
