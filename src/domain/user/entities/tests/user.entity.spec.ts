@@ -25,4 +25,8 @@ describe('User', () => {
   it('should get the id', () => {
     expect(user.id).toBe(userId);
   });
+
+  it('should get the username', () => {
+    expect(user.username).toBe(username);
+  });
 });
