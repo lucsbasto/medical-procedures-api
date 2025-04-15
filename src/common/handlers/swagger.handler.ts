@@ -7,6 +7,7 @@ export function setupSwagger(app: INestApplication): INestApplication {
     .setTitle('Medical Procedures')
     .setDescription('This is the OpenAPI specifications for the Medical Procedures API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options, {});
