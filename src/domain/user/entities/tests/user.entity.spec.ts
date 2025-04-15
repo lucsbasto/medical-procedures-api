@@ -21,4 +21,8 @@ describe('User', () => {
     expect(user.email).toBe(email);
     expect(user.roles).toEqual(roles);
   });
+
+  it('should get the id', () => {
+    expect(user.id).toBe(userId);
+  });
 });
