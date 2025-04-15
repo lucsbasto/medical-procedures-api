@@ -92,3 +92,21 @@ Para iniciar o servidor em modo de desenvolvimento com hot-reloading:
 
 ```bash
 npm run start:dev
+```
+
+A API estará disponível em `http://localhost:3000` (ou na porta definida na variável `PORT` do seu arquivo `.env`). A documentação interativa da API (Swagger UI) pode ser acessada em `http://localhost:3000/api/docs`.
+
+## Testes
+
+Para executar a suíte completa de testes unitários e de integração:
+
+```bash
+npm run test
+```
+
+Para executar os testes e gerar o relatório de cobertura de código:
+
+```bash
+npm run test:cov
+```
+Os resultados da cobertura de código serão gerados em formato HTML e outros na pasta coverage na raiz do seu projeto. Abra o arquivo index.html dentro desta pasta para visualizar o relatório detalhado da cobertura.
