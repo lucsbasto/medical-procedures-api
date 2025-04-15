@@ -1,3 +1,4 @@
+import { Role } from '@/common/enums/role.enum';
 import { ILoggerService } from '@/domain/interfaces/common/logger';
 import { GenerateDeniedReportByPeriodUseCaseInterface } from '@/domain/medical-procedure/usecases/generate-denied-report-by-period/generate-denied-report-by-period.use-case.interface';
 import { Controller, Get, Inject, Query, UseGuards, ValidationPipe } from '@nestjs/common';
@@ -8,13 +9,15 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Roles } from '../../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 import { GenerateDeniedReportByPeriodInputDto } from './dtos/generate-denied-report-by-period-input.dto';
 import { GenerateDeniedReportByPeriodOutputDto } from './dtos/generate-denied-report-by-period-output.dto';
 
 @ApiTags('Reports')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('reports/denied')
 export class DeniedReportController {
   constructor(
@@ -27,6 +30,7 @@ export class DeniedReportController {
   }
 
   @Get()
+  @Roles(Role.SUPPORT, Role.DOCTOR, Role.ADMIN)
   @ApiOkResponse({
     description: 'Relatório de procedimentos negados por período gerado com sucesso.',
     type: [GenerateDeniedReportByPeriodOutputDto],

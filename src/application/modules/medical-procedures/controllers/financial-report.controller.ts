@@ -1,3 +1,4 @@
+import { Role } from '@/common/enums/role.enum';
 import { ILoggerService } from '@/domain/interfaces/common/logger';
 import { GenerateFinancialReportByDoctorUseCaseInterface } from '@/domain/medical-procedure/usecases/generate-financial-report-by-doctor/generate-financial-report-by-doctor.use-case.interface';
 import { Controller, Get, Inject, Query, UseGuards, ValidationPipe } from '@nestjs/common';
@@ -8,13 +9,15 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Roles } from '../../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 import { GenerateFinancialReportByDoctorInputDto } from './dtos/generate-financial-report-by-doctor-input.dto';
 import { GenerateFinancialReportByDoctorOutputDto } from './dtos/generate-financial-report-by-doctor-output.dto';
 
 @ApiTags('Reports')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('reports/financial')
 export class FinancialReportController {
   constructor(
@@ -27,6 +30,7 @@ export class FinancialReportController {
   }
 
   @Get()
+  @Roles(Role.SUPPORT, Role.DOCTOR, Role.ADMIN)
   @ApiOkResponse({
     description: 'Relatório financeiro por médico gerado com sucesso.',
     type: [GenerateFinancialReportByDoctorOutputDto],

@@ -1,3 +1,4 @@
+import { Role } from '@/common/enums/role.enum';
 import { ILoggerService } from '@/domain/interfaces/common/logger';
 import { DeleteMedicalProcedureUseCaseInterface } from '@/domain/medical-procedure/usecases/delete-medical-procedure/delete-medical-procedure.use-case.interface';
 import { GetAllMedicalProceduresUseCaseInterface } from '@/domain/medical-procedure/usecases/get-all-medical-procedures/get-all-medical-procedures.use-case.interface';
@@ -26,7 +27,9 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { Roles } from '../../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 import {
   CreateMedicalProcedureInputDto,
   CreateMedicalProcedureResponseDto,
@@ -38,7 +41,7 @@ import {
 
 @ApiTags('Medical Procedures')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('medical-procedures')
 export class MedicalProceduresController {
   constructor(
@@ -59,6 +62,7 @@ export class MedicalProceduresController {
   }
 
   @Post()
+  @Roles(Role.DOCTOR, Role.ADMIN)
   @ApiCreatedResponse({
     type: CreateMedicalProcedureResponseDto,
     description: 'Medical procedure registered successfully.',
@@ -72,6 +76,7 @@ export class MedicalProceduresController {
   }
 
   @Get(':id')
+  @Roles(Role.SUPPORT, Role.DOCTOR, Role.ADMIN)
   @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
   @ApiOkResponse({ type: GetMedicalProcedureByIdResponseDto, description: 'Medical procedure found.' })
   @ApiNotFoundResponse({ description: 'Medical procedure not found.' })
@@ -82,6 +87,7 @@ export class MedicalProceduresController {
   }
 
   @Get()
+  @Roles(Role.SUPPORT, Role.DOCTOR, Role.ADMIN)
   @ApiOkResponse({ type: [GetAllMedicalProceduresResponseDto], description: 'List of all medical procedures.' })
   async findAll(): Promise<GetAllMedicalProceduresResponseDto> {
     this.loggerService.log('findAll');
@@ -89,6 +95,7 @@ export class MedicalProceduresController {
   }
 
   @Put(':id')
+  @Roles(Role.DOCTOR, Role.ADMIN)
   @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
   @ApiOkResponse({ type: UpdateMedicalProcedureResponseDto, description: 'Medical procedure updated successfully.' })
   @ApiNotFoundResponse({ description: 'Medical procedure not found.' })
@@ -105,6 +112,7 @@ export class MedicalProceduresController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOkResponse({ description: 'Medical procedure deleted successfully.' })

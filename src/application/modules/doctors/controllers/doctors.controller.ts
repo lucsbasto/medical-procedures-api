@@ -1,3 +1,4 @@
+import { Role } from '@/common/enums/role.enum';
 import { GetAllDoctorsUseCaseInterface } from '@/domain/doctor/use-cases/get-all-doctors/get-all-doctors.use-case.interface';
 import { GetDoctorByIdUseCaseInterface } from '@/domain/doctor/use-cases/get-doctor-by-id/get-doctor-by-id.use-case.interface';
 import { RegisterDoctorUseCaseInterface } from '@/domain/doctor/use-cases/register-doctor/register-doctor.use-case.interface';
@@ -12,13 +13,15 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Roles } from '../../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 import { CreateDoctorDto } from './dtos/create-doctor.dto';
 import { DoctorResponseDto } from './dtos/doctor-response.dto';
 
 @ApiTags('Doctors')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doctors')
 export class DoctorsController {
   constructor(
@@ -35,6 +38,7 @@ export class DoctorsController {
   }
 
   @Post()
+  @Roles(Role.ADMIN)
   @ApiCreatedResponse({ description: 'Médico criado com sucesso.', type: DoctorResponseDto })
   @ApiBadRequestResponse({ description: 'Dados de requisição inválidos.' })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
@@ -44,6 +48,7 @@ export class DoctorsController {
   }
 
   @Get()
+  @Roles(Role.SUPPORT, Role.ADMIN)
   @ApiOkResponse({ description: 'Lista de todos os médicos.', type: [DoctorResponseDto] })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async findAll(): Promise<DoctorResponseDto[]> {
@@ -52,6 +57,7 @@ export class DoctorsController {
   }
 
   @Get(':id')
+  @Roles(Role.SUPPORT, Role.ADMIN)
   @ApiOkResponse({ description: 'Detalhes de um médico específico.', type: DoctorResponseDto })
   @ApiNotFoundResponse({ description: 'Médico não encontrado.' })
   @ApiBadRequestResponse({ description: 'ID do médico em formato inválido.' })

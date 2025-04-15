@@ -10,12 +10,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { Role } from '@/common/enums/role.enum';
 import { ILoggerService } from '@/domain/interfaces/common/logger';
 import { GetAllPatientsUseCaseInterface } from '@/domain/patient/use-cases/get-all-patients/get-all-patients.use-case.interface';
 import { GetPatientByIdUseCaseInterface } from '@/domain/patient/use-cases/get-patient-by-id/get-patient-by-id.use-case.interface';
 import { RegisterPatientUseCaseInterface } from '@/domain/patient/use-cases/register-patient/register-patient.use-case.interface';
 import { UpdatePatientUseCaseInterface } from '@/domain/patient/use-cases/update-patient/update-patient.use-case.interface';
+import { Roles } from '../../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 import {
   CreatePatientInputDto,
   CreatePatientResponseDto,
@@ -27,7 +30,7 @@ import {
 
 @ApiTags('Patients')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('patients')
 export class PatientsController {
   constructor(
@@ -46,6 +49,7 @@ export class PatientsController {
   }
 
   @Post()
+  @Roles(Role.SUPPORT, Role.ADMIN)
   @ApiCreatedResponse({ description: 'Paciente criado com sucesso.', type: CreatePatientResponseDto })
   @ApiBadRequestResponse({ description: 'Dados de requisição inválidos.' })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
@@ -55,6 +59,7 @@ export class PatientsController {
   }
 
   @Get()
+  @Roles(Role.SUPPORT, Role.ADMIN, Role.DOCTOR)
   @ApiOkResponse({ description: 'Lista de todos os pacientes.', type: [GetAllPatientResponseDto] })
   @ApiInternalServerErrorResponse({ description: 'Erro interno do servidor.' })
   async findAll(): Promise<GetAllPatientResponseDto[]> {
@@ -63,6 +68,7 @@ export class PatientsController {
   }
 
   @Get(':id')
+  @Roles(Role.SUPPORT, Role.ADMIN, Role.DOCTOR)
   @ApiOkResponse({ description: 'Detalhes de um paciente específico.', type: GetByIdPatientResponseDto })
   @ApiNotFoundResponse({ description: 'Paciente não encontrado.' })
   @ApiBadRequestResponse({ description: 'ID do paciente em formato inválido.' })
@@ -73,6 +79,7 @@ export class PatientsController {
   }
 
   @Patch(':id')
+  @Roles(Role.SUPPORT, Role.ADMIN)
   @ApiOkResponse({ description: 'Paciente atualizado com sucesso.', type: UpdatePatientResponseDto })
   @ApiNotFoundResponse({ description: 'Paciente não encontrado.' })
   @ApiBadRequestResponse({ description: 'Dados de requisição inválidos.' })
