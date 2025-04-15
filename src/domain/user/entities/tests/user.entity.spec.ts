@@ -35,4 +35,8 @@ describe('User', () => {
     user.username = newUsername;
     expect(user.username).toBe(newUsername);
   });
+
+  it('should get the password', () => {
+    expect(user.password).toBe(password);
+  });
 });
