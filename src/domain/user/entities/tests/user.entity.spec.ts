@@ -59,4 +59,9 @@ describe('User', () => {
     user.roles = newRoles;
     expect(user.roles).toEqual(newRoles);
   });
+
+  it('should create a User instance with empty roles if not provided', () => {
+    const userWithoutRoles = new User(uuidv4(), username, password, email);
+    expect(userWithoutRoles.roles).toEqual([]);
+  });
 });
