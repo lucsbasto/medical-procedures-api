@@ -49,4 +49,8 @@ describe('User', () => {
     user.email = newEmail;
     expect(user.email).toBe(newEmail);
   });
+
+  it('should get the roles', () => {
+    expect(user.roles).toEqual(roles);
+  });
 });
