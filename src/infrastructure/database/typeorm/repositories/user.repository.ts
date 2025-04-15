@@ -1,6 +1,5 @@
-// src/infrastructure/database/typeorm/repositories/typeorm-user.repository.ts
 import { ILoggerService } from '@/domain/interfaces/common/logger';
-import { UserRepository } from '@/domain/user/entities/repositories/user.repository';
+import { UserRepository } from '@/domain/user/repositories/user.repository';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

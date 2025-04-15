@@ -1,8 +1,8 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository } from '../../entities/repositories/user.repository';
 import { User } from '../../entities/user.entity';
+import { UserRepository } from '../../repositories/user.repository';
 import { CreateUserInput } from '../dtos/create-user.input';
 import { CreateUserOutput } from '../dtos/create-user.output';
 import { CreateUserUseCaseInterface } from './create-user.use-case.interface';

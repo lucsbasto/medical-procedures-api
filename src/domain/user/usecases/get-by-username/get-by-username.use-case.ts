@@ -1,6 +1,5 @@
-// src/users/use-cases/get-user-by-username.use-case.ts
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../../entities/repositories/user.repository';
+import { UserRepository } from '../../repositories/user.repository';
 import { GetUserByUsernameOutput } from './dtos/get-by-username.output';
 import { GetUserByUsernameUseCaseInterface } from './get-by-username.use-case.inferface';
 

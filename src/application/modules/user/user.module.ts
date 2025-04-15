@@ -1,4 +1,3 @@
-// src/users/users.module.ts
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserEntity } from '@/infrastructure/database/typeorm/entities/user.entity';
 import { TypeOrmUserRepository } from '@/infrastructure/database/typeorm/repositories/user.repository';
