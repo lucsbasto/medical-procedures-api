@@ -42,6 +42,15 @@ Esta é uma API RESTful robusta e escalável construída com NestJS para o geren
     * Geração automática de documentação OpenAPI (Swagger) acessível através da rota `/api/docs`. Esta documentação permite a exploração interativa dos endpoints, incluindo a visualização de parâmetros, corpos de requisição e respostas esperadas, facilitando a integração e o teste da API.
 * **Tratamento Consistente de Erros e Exceções:**
     * Implementação de um tratamento de erros e exceções HTTP consistente em toda a API. As respostas de erro seguem padrões bem definidos, fornecendo informações claras sobre a natureza do problema para o cliente. Exceções específicas do NestJS (como `BadRequestException`, `NotFoundException`, `UnauthorizedException`, `ForbiddenException`) são utilizadas para indicar diferentes tipos de erros.
+    
+    * Padrões de Resposta de Erro: Quando ocorre um erro, a API geralmente retorna uma resposta HTTP com um código de status apropriado (geralmente na faixa `4xx` para erros do cliente e `5xx` para erros do servidor) e um corpo JSON contendo detalhes sobre o erro. A estrutura típica do corpo de erro é a seguinte:
+
+      ```json
+      {
+        "statusCode": 400,
+        "message": "Mensagem descritiva do erro",
+        "error": "Tipo do erro (opcional, mas útil)"
+      }
 * **Segurança Aprimorada:**
     * **Autenticação:** Implementação de um sistema de autenticação robusto utilizando tokens JSON Web (JWT). Os usuários (como médicos e administradores) precisam se autenticar para acessar rotas protegidas, garantindo que apenas usuários autorizados possam interagir com dados sensíveis.
     * **Autorização Baseada em Roles (RBAC):** O acesso a diferentes funcionalidades e recursos da API é controlado através de um sistema de autorização baseado em roles (`SUPPORT`, `DOCTOR`, `ADMIN`). Guards personalizados (`RolesGuard`) são utilizados em conjunto com decorators (`@Roles()`) para restringir o acesso a rotas com base nas roles atribuídas ao usuário autenticado.
@@ -62,6 +71,7 @@ Esta é uma API RESTful robusta e escalável construída com NestJS para o geren
     * **Guard Pattern:** Para implementar a lógica de autenticação e autorização de forma declarativa.
     * **DTO (Data Transfer Object):** Para definir a estrutura dos dados que são transferidos entre a API e os clientes, além de serem usados para validação.
 * **Cobertura de Testes:** A API possui uma suíte abrangente de testes unitários e de integração, utilizando o framework Jest. Os testes cobrem as principais funcionalidades, garantindo a confiabilidade do código, facilitando a refatoração e fornecendo confiança nas entregas. A cobertura de testes pode ser verificada através de comandos como `npm run test:cov`.
+
 
 ## Pré-requisitos
 
